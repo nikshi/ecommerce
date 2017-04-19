@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class SecirityController extends Controller
+class SecurityController extends Controller
 {
 
 
@@ -62,13 +62,22 @@ class SecirityController extends Controller
      * @Route("/login", name="user_login")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function loginAction()
+    public function loginAction(Request $request)
     {
-        $user =  $this->getUser();
 
-        echo '<pre><br>=====DEBUG START======<br> '.print_r($user,1).' <br>=====DEBUG END======<br></pre>';
+        $authenticationUtils = $this->get('security.authentication_utils');
 
-        return $this->render('security/login.html.twig');
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+
     }
 
     /**
@@ -79,14 +88,5 @@ class SecirityController extends Controller
         return $this->render('security/login.html.twig');
     }
 
-
-    /**
-     * @Route("/admin", name="admin")
-     * @Security(expression="has_role('ROLE_USER')")
-     */
-    public function adminAction()
-    {
-        echo "GREATTT !!!!";
-    }
 
 }
