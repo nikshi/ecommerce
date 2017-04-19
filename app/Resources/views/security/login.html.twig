@@ -1,30 +1,40 @@
+{% extends 'layouts/left-sidebar.html.twig' %}
 
-{% extends 'base.html.twig' %}
+{% block title %}
+    Вход
+{% endblock %}
 
-{# app/Resources/views/security/login.html.twig #}
-{# ... you will probably extend your base template, like base.html.twig #}
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
 
-
-
-{% block body %}
-
+{% block mainContent %}
+    <h1>Вход</h1>
     {% if error %}
         <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-<form action="{{ path('user_login') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+    <form action="{{ path('user_login') }}" method="post">
+        <div class="form-group">
+            <label for="email">Емайл:</label>
+            <input type="email" class="form-control" id="email" name="_username" placeholder="Въведете Вашия Емайл адрес" value="{{ last_username }}" />
+        </div>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
+        <div class="form-group">
+            <label for="password">Парола:</label>
+            <input type="password" class="form-control" id="password" name="_password" placeholder="Въведете Вашия парола" value="" />
+        </div>
 
-    {#
-        If you want to control the URL the user
-        is redirected to on success (more details below)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
+        <input type="hidden" name="_target_path" value="{{ path('homepage') }}" />
 
-    <button type="submit">login</button>
-</form>
+        <button type="submit" class="btn btn-success">Вход</button>
+    </form>
 {% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+

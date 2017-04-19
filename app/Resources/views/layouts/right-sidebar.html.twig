@@ -2,13 +2,18 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{% endblock %} Kalvacha Store</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-
+        {{ include('global_blocks/styles.html.twig') }}
     </head>
     <body>
+    {{ include('global_blocks/header.html.twig') }}
         {% block body %}{% endblock %}
+
         {% block javascripts %}{% endblock %}
+
+        {{ include(':global_blocks:footer.html.twig') }}
+        {{ include('global_blocks/scripts.html.twig') }}
     </body>
 </html>

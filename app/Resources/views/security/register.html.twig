@@ -1,12 +1,23 @@
-{% extends 'layouts/full-width.html.twig' %}
+{% extends 'layouts/left-sidebar.html.twig' %}
 
+{% block title %}
+Регистрация
+{% endblock %}
 
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
 
-{% block body %}
-    <div class="container">
+{% block mainContent %}
+    <h1>Регистрация на потребител</h1>
         {{ form_start(form) }}
         {{ form_widget(form) }}
         <input type="submit" value="Register" />
         {{ form_end(form) }}
-    </div>
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
 {% endblock %}
