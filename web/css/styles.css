@@ -12,6 +12,25 @@ a:hover, a:focus, a:active{
 }
 
 
+.flash-notice {
+    background: #f1f1f1;
+    color: #616161;
+    padding: 15px;
+    margin-bottom: 5px;
+}
+
+.flash-success {
+    background: #d1f1d1;
+}
+
+.flash-error {
+    background: #ffd9d9;
+}
+
+.flash-warning {
+    background: #ffebc2;
+}
+
 /*Helper classes*/
 
 .inline-block {
@@ -111,6 +130,7 @@ header {
 #user_menu ul {
     display: none;
     position: absolute;
+    z-index: 99;
     background: #FF7200;
     width: 213px;
     top:34px;

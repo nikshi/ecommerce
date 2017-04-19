@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity("email", message="Е-мейлът е вече регистриран")
+ * @UniqueEntity("phone", message="Номерът вече се използва")
  */
 class User implements UserInterface
 {
@@ -38,9 +41,6 @@ class User implements UserInterface
      *
      * @ORM\Column(name="name", type="string", length=255)
      *
-     * @Assert\NotBlank(
-     *     message="Моля въведете име"
-     * )
      */
     private $name;
 
@@ -62,10 +62,62 @@ class User implements UserInterface
     /**
      * @var string
      *
+     *
+     *   @Assert\NotBlank(
+     *     message="Моля въведете парола!"
+     * )
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="area", type="string", nullable=true, length=255)
+     *
+     */
+    private $area;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="municipality", type="string", nullable=true, length=255)
+     *
+     */
+    private $municipality;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city", type="string", nullable=true, length=255)
+     *
+     */
+    private $city;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post_code", type="string", nullable=true, length=255)
+     *
+     */
+    private $post_code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", nullable=true, length=255)
+     *
+     */
+    private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", nullable=true, length=255)
+     *
+     */
+    private $phone;
 
     /**
      * @var Role[]
@@ -280,6 +332,102 @@ class User implements UserInterface
 
     public function addRole(Role $role){
         $this->roles->add($role);
+    }
+
+    /**
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param string $area
+     */
+    public function setArea($area)
+    {
+        $this->area = $area;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMunicipality()
+    {
+        return $this->municipality;
+    }
+
+    /**
+     * @param string $municipality
+     */
+    public function setMunicipality($municipality)
+    {
+        $this->municipality = $municipality;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostCode()
+    {
+        return $this->post_code;
+    }
+
+    /**
+     * @param string $post_code
+     */
+    public function setPostCode($post_code)
+    {
+        $this->post_code = $post_code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     }
 
 }

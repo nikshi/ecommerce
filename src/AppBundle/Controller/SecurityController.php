@@ -52,9 +52,9 @@ class SecurityController extends Controller
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', "Успешна регистрация");
+            $this->addFlash('success', "Успешна регистрация! Може да влезнете в профила си.");
 
-            return $this->redirectToRoute("homepage");
+            return $this->redirectToRoute("user_login");
         }else {
             return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
         }
