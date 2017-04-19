@@ -7,25 +7,36 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-
 /**
- * Class AdminController
+ * Class UserController
  * @package AppBundle\Controller
- * @Route("/admin", name="dashboard")
+ * @Route("/user")
  * @Security(expression="has_role('ROLE_USER')")
+ *
  */
 
-class AdminController extends Controller
+class UserController extends Controller
 {
 
     /**
-     * @Route("/", name="dashboard")
+     * @Route("/")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      */
 
-    public function indexAction()
+    public function profileAction()
     {
-        return $this->render('admin/dashboard.html.twing', array());
+        return $this->render('user/profile.html.twig', array());
+    }
+
+    /**
+     * @Route("/edit")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function editAction()
+    {
+        return $this->render('user/edit.html.twig', array());
     }
 }
