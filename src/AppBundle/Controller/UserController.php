@@ -53,6 +53,7 @@ class UserController extends Controller
         }
 
         $form = $this->createForm(UserType::class, $user);
+        $form->remove('password');
         return $this->render('user/edit.html.twig', ['form'=> $form->createView()]);
     }
 
@@ -74,6 +75,8 @@ class UserController extends Controller
         }
 
         $form = $this->createForm(UserType::class, $user);
+        $form->remove('password');
+
         $form->handleRequest($request);
 
         if($form->isValid()){
