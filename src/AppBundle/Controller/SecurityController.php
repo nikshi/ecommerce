@@ -42,10 +42,13 @@ class SecurityController extends Controller
 
         $encoder = $this->get('security.password_encoder');
 
-        if($form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
+            $user->setCreatedOn(new \DateTime());
             $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
+
             $userRole = $this->getDoctrine()->getRepository(Role::class)
                 ->findOneBy(['name' => 'ROLE_USER']);
+
             $user->addRole($userRole);
             $user->setPassword($hashedPassword);
             $em = $this->getDoctrine()->getManager();

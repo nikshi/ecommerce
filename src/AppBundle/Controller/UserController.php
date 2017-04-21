@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Role;
+use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
+use AppBundle\Form\ProductType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -79,7 +81,7 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
-        if($form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
             $em = $em->getManager();
             $em->persist($user);
             $em->flush();
@@ -92,4 +94,5 @@ class UserController extends Controller
             return $this->render('user/edit.html.twig', ['form'=> $form->createView()]);
         }
     }
+
 }

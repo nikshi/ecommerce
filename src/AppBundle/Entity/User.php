@@ -21,10 +21,11 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->lastLogin = new \DateTime();
-        $this->createdOn = new \DateTime();
+//        $this->lastLogin = new \DateTime();
+//        $this->createdOn = new \DateTime();
 
-        $this->roles = new ArrayCollection();
+        $this->roles    = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -131,14 +132,23 @@ class User implements UserInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_on", type="datetimetz")
+     * @ORM\Column(name="created_on", type="datetimetz", nullable=true)
      */
     private $createdOn;
 
     /**
+     * @var Product[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="user")
+     *
+     */
+
+    private $products;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_login", type="datetimetz")
+     * @ORM\Column(name="last_login", type="datetimetz", nullable=true)
      */
     private $lastLogin;
 
@@ -428,6 +438,22 @@ class User implements UserInterface
     public function setPhone($phone)
     {
         $this->phone = $phone;
+    }
+
+    /**
+     * @return Product[]|ArrayCollection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Product[]|ArrayCollection $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
     }
 
 }
