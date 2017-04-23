@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
     /**
      * @var int
      *
@@ -31,7 +38,7 @@ class Category
 
     /**
      * @var Product[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Product", mappedBy="categories")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="categories")
      */
 
     private $products;

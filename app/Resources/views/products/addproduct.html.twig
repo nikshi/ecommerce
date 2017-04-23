@@ -1,0 +1,23 @@
+{% extends 'layouts/left-sidebar.html.twig' %}
+
+{% block title %}
+    Добавяне на продукт
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+    <h1>Добавяне на продукт</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-success">Добави</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

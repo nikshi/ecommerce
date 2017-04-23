@@ -9,9 +9,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Cocur\Slugify\Slugify;
 
 class ProductController extends Controller
 {
+
+
+    /**
+     * @Route("/user/products", name="user_products")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function ProductsAction(Request $request)
+    {
+
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT a FROM AppBundle:Product a";
+        $query = $em->createQuery($dql);
+
+        $paginator  = $this->get('knp_paginator');
+        $products = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
+        );
+
+//        $products = $this->getDoctrine()->getRepository('AppBundle:Product')->findBy(['user' => $this->getUser()]);
+
+        return $this->render('products/list.html.twig', ['products'=> $products]);
+    }
 
     /**
      * @Route("/user/products/addproduct", name="add_product")
@@ -25,7 +52,7 @@ class ProductController extends Controller
         $form = $this->createForm(ProductType::class, null, array(
             'categories' => $this->getProductsCategories()
         ));
-        return $this->render('admin/addproduct.html.twing', ['form'=> $form->createView()]);
+        return $this->render('products/addproduct.html.twig', ['form'=> $form->createView()]);
     }
 
     /**
@@ -38,38 +65,43 @@ class ProductController extends Controller
     {
 
         $product = new Product();
-
+        $slugify = new Slugify();
 
         $form = $this->createForm(ProductType::class, $product, array(
             'categories' => $this->getProductsCategories() ));
 
-        dump($request);exit;
-
         $form->handleRequest($request);
-
-
 
         if($form->isSubmitted() && $form->isValid()){
 
-//            $product->setCreatedOn( new \DateTime());
-//            $product->setUpdatedOn( new \DateTime());
+            $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($request->request->get('product')['category']);
 
-//            /** @var UploadedFile $file */
-//            $file = $product->getImage();
-//
-//            $filename = md5($product->getName().''.$product->getCreatedOn()->format('Y-m-d H:i:s')).'.'.$file->getExtension();
-//
-//            $file->move($this->get('kernel')->getRootDir().'/../web/images/products/'.$product->getId(), $filename);
-//
-//            $product->setImage($filename);
+            $product->setCategory($category);
+            $product->setUser($this->getUser());
+            $slug =  $slugify->slugify( $product->getName(), '-');
 
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($product);
-//            $em->flush();
+            $product->setSlug( date("now") );
+            $product->setCreatedOn( new \DateTime());
+            $product->setUpdatedOn( new \DateTime());
 
-//            $this->addFlash('success', "Продуктът е добавен успешно");
+            /** @var UploadedFile $file */
+            $file = $product->getProductImage();
+            $filename = md5($product->getName().''.$product->getCreatedOn()->format('Y-m-d H:i:s')).'.'.$file->getClientOriginalExtension();
+            $product->setProductImage($filename);
 
-            return $this->redirectToRoute("user_login");
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $file->move($this->get('kernel')->getRootDir().'/../web/images/products/'.$product->getId(), $filename);
+            $product->setSlug( $slug . '-' . $product->getId() );
+
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('success', "Продуктът е добавен успешно (" . $product->getId() . ")");
+
+            return $this->redirectToRoute('user_products');
         }else {
             return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
         }

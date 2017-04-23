@@ -18,7 +18,6 @@ class Product
     public function __construct()
     {
         $this->createdOn    = new \DateTime();
-        $this->categories   = new ArrayCollection();
         $this->reviews      = new ArrayCollection();
     }
 
@@ -48,13 +47,12 @@ class Product
 
 
     /**
-     * @var Category[]
+     * @var Category
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category", inversedBy="products")
-     * @ORM\JoinTable(name="prod_cats", joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},  inverseJoinColumns={@ORM\JoinColumn(name="cat_id", referencedColumnName="id") })")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
      *
      */
-    private $categories;
+    private $category;
 
     /**
      * @var string
@@ -92,6 +90,12 @@ class Product
      */
     private $qty;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="product_image", type="string", nullable=true)
+     */
+    private $productImage;
 
     /**
      * @var \DateTime
@@ -302,20 +306,37 @@ class Product
     }
 
     /**
-     * @return Category[]
+     * @return Category
      */
-    public function getCategories()
+    public function getCategory()
     {
-        return $this->categories;
+        return $this->category;
     }
 
     /**
-     * @param Category[] $categories
+     * @param Category $category
      */
-    public function setCategories($categories)
+    public function setCategory($category)
     {
-        $this->categories = $categories;
+        $this->category = $category;
     }
+
+    /**
+     * @return string
+     */
+    public function getProductImage()
+    {
+        return $this->productImage;
+    }
+
+    /**
+     * @param string $productImage
+     */
+    public function setProductImage($productImage)
+    {
+        $this->productImage = $productImage;
+    }
+
 
 }
 

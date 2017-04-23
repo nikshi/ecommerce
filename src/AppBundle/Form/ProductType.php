@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -50,10 +51,18 @@ class ProductType extends AbstractType
 //                ),
 //                'label' => 'Цена',
 //            ))
-            ->add('categories', ChoiceType::class, array(
+//            ->add('categories', CollectionType::class, array(
+//                'entry_type'   => ChoiceType::class,
+//                'entry_options'  => array(
+//                    'choices'  => array_flip($options['categories']),
+//                ),
+//                ));
+            ->add('category', ChoiceType::class, array(
                 'choices'       => array_flip($options['categories']),
                 'placeholder'   => 'Изберете категории',
-//                'multiple'      => true,
+            ))
+            ->add('productImage', FileType::class, array(
+                'label'   => 'Изображение',
             ));
     }
 

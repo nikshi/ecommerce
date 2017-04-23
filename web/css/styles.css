@@ -31,6 +31,10 @@ a:hover, a:focus, a:active{
     background: #ffebc2;
 }
 
+.float-right {
+    float: right;
+}
+
 /*Helper classes*/
 
 .inline-block {
