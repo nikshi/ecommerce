@@ -32,37 +32,38 @@ class ProductType extends AbstractType
                     'class'=>'',
                 ),
                 'label' => 'Име',
+                'required'=> false
             ))
-//            ->add('description', TextareaType::class, array(
-//                'attr' => array(
-//                    'class'=>'',
-//                ),
-//                'label' => 'Описание',
-//            ))
-//            ->add('price', NumberType::class, array(
-//                'attr' => array(
-//                    'class'=>'',
-//                ),
-//                'label' => 'Цена',
-//            ))
-//            ->add('qty', IntegerType::class, array(
-//                'attr' => array(
-//                    'class'=>'',
-//                ),
-//                'label' => 'Цена',
-//            ))
-//            ->add('categories', CollectionType::class, array(
-//                'entry_type'   => ChoiceType::class,
-//                'entry_options'  => array(
-//                    'choices'  => array_flip($options['categories']),
-//                ),
-//                ));
+            ->add('description', TextareaType::class, array(
+                'attr' => array(
+                    'class'=>'',
+                ),
+                'label' => 'Описание',
+                'required'=> false
+            ))
+            ->add('price', NumberType::class, array(
+                'attr' => array(
+                    'class'=>'',
+                ),
+                'label' => 'Цена',
+                'required'=> false
+            ))
+            ->add('qty', IntegerType::class, array(
+                'attr' => array(
+                    'class'=>'',
+                ),
+                'label' => 'Налично количество',
+                'required'=> false
+            ))
             ->add('category', ChoiceType::class, array(
                 'choices'       => array_flip($options['categories']),
                 'placeholder'   => 'Изберете категории',
+                'label'         => 'Категория',
+                'required'=> false
             ))
-            ->add('productImage', FileType::class, array(
+            ->add('image_form', FileType::class, array(
                 'label'   => 'Изображение',
+                'required' =>false,
             ));
     }
 

@@ -39,9 +39,10 @@ class User implements UserInterface
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
-     *
+     * @Assert\NotBlank(
+     *     message="Моля въведете Вашето име!"
+     * )
      */
     private $name;
 
@@ -63,7 +64,6 @@ class User implements UserInterface
     /**
      * @var string
      *
-     *
      *   @Assert\NotBlank(
      *     message="Моля въведете парола!"
      * )
@@ -71,6 +71,12 @@ class User implements UserInterface
      */
     private $password;
 
+
+    /**
+     * @var string
+     *
+     */
+    private $oldPassword;
 
     /**
      * @var string
@@ -454,6 +460,22 @@ class User implements UserInterface
     public function setProducts($products)
     {
         $this->products = $products;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOldPassword()
+    {
+        return $this->oldPassword;
+    }
+
+    /**
+     * @param string $oldPassword
+     */
+    public function setOldPassword($oldPassword)
+    {
+        $this->oldPassword = $oldPassword;
     }
 
 }

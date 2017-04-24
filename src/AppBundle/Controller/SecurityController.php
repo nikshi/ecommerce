@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,7 +37,6 @@ class SecurityController extends Controller
     public function registerProcess(Request $request)
     {
         $user = new User();
-
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -94,5 +94,86 @@ class SecurityController extends Controller
         return $this->render('security/login.html.twig');
     }
 
+
+    /**
+     * @Route("user/changepassword/{id}", name="change_password_user")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function changePasswordAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found with id: '.$user
+            );
+        }
+
+        $form = $this->createForm(ChangePasswordType::class, $user);
+
+        return $this->render('user/changepassword.html.twig', ['form'=> $form->createView()]);
+    }
+
+    /**
+     * @Route("user/changepassword/{id}")
+     * @Method("POST")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function changePasswordProcess(Request $request, $id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->find($id);
+
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found with id: '.$user
+            );
+        }
+
+        $userPassword = $user->getPassword();
+
+        $form = $this->createForm(ChangePasswordType::class, $user);
+
+        $form->handleRequest($request);
+
+        $encoder = $this->get('security.password_encoder');
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $old_pwd = $request->get('change_password')['oldPassword'];
+
+            $hashedPasswordOldPass = $encoder->encodePassword($user, '1234');
+
+            dump($request->get('change_password')['oldPassword']);
+            dump($hashedPasswordOldPass);
+            dump($userPassword);
+
+            if( $hashedPasswordOldPass != $userPassword ) {
+
+                $this->addFlash('error', "Въвели сте грешна текуща парола");
+                return $this->render('user/changepassword.html.twig', ['form'=> $form->createView()]);
+            } else {
+                //            $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
+//
+//            $user->setPassword($hashedPassword);
+//            $em = $this->getDoctrine()->getManager();
+//            $em->persist($user);
+//            $em->flush();
+                $this->addFlash('success', "Успешна регистрация! Може да влезнете в профила си.");
+            }
+
+            return $this->redirectToRoute("user_products");
+        }else {
+            return $this->render('user/changepassword.html.twig', ['form'=> $form->createView()]);
+        }
+
+
+    }
 
 }

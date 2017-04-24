@@ -151,6 +151,15 @@ header {
     font-size: 14px;
 }
 
+
+
+/*Edit user*/
+
+.edit-product-img h4 {
+    text-align: center;
+    color: #ccc;
+}
+
 /*Footer*/
 
 footer {

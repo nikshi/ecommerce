@@ -40,8 +40,9 @@
                                     <a href="" title="User Menu" class="header-login-btn"><i class="fa fa-bars" aria-hidden="true"></i> {{ app.user.username }}</a>
                                     <ul class="user-manu">
                                         <li><a href="#" title="Поръчки">Моите поръчки</a></li>
+                                        <li><a href="{{ path('user_products') }}" title="Продукти">Моите продукти</a></li>
                                         <li><a href="{{ path('edit_user', {'id': app.user.id}) }}" title="Редактиране на профила">Редактиране на профила</a></li>
-                                        <li><a href="{{ path('edit_user', {'id': app.user.id}) }}" title="Редактиране на профила">Смяна на парола</a></li>
+                                        <li><a href="{{ path('change_password_user', {'id': app.user.id}) }}" title="Редактиране на профила">Смяна на парола</a></li>
                                     </ul>
                                 </span>
                                 <a href="{{ path('logout') }}" title="Logout" class="header-register-btn">Изход</a>

@@ -38,7 +38,7 @@ class Category
 
     /**
      * @var Product[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="categories")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="category")
      */
 
     private $products;

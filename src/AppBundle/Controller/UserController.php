@@ -10,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -58,6 +57,7 @@ class UserController extends Controller
         $form->remove('password');
         return $this->render('user/edit.html.twig', ['form'=> $form->createView()]);
     }
+
 
     /**
      * @Route("/edit/{id}", name="user_edit_process")

@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -21,7 +21,6 @@ class Product
         $this->reviews      = new ArrayCollection();
     }
 
-
     /**
      * @var int
      *
@@ -34,10 +33,15 @@ class Product
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="products")
-     *
      */
     private $user;
 
+
+    /**
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
+     */
+    private $category;
 
     /**
      * @var Review[]|ArrayCollection
@@ -45,19 +49,11 @@ class Product
      */
     private $reviews;
 
-
-    /**
-     * @var Category
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
-     *
-     */
-    private $category;
-
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=false)
+     *
      */
     private $name;
 
@@ -78,7 +74,7 @@ class Product
     /**
      * @var string
      *
-     * @ORM\Column(name="price", type="decimal", precision=10, scale=0, nullable=true)
+     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
      */
 
     private $price;
@@ -96,6 +92,9 @@ class Product
      * @ORM\Column(name="product_image", type="string", nullable=true)
      */
     private $productImage;
+
+
+    private $image_form;
 
     /**
      * @var \DateTime
@@ -306,6 +305,22 @@ class Product
     }
 
     /**
+     * @return string
+     */
+    public function getProductImage()
+    {
+        return $this->productImage;
+    }
+
+    /**
+     * @param string $productImage
+     */
+    public function setProductImage($productImage)
+    {
+        $this->productImage = $productImage;
+    }
+
+    /**
      * @return Category
      */
     public function getCategory()
@@ -322,19 +337,19 @@ class Product
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getProductImage()
+    public function getImageForm()
     {
-        return $this->productImage;
+        return $this->image_form;
     }
 
     /**
-     * @param string $productImage
+     * @param mixed $image_form
      */
-    public function setProductImage($productImage)
+    public function setImageForm($image_form)
     {
-        $this->productImage = $productImage;
+        $this->image_form = $image_form;
     }
 
 

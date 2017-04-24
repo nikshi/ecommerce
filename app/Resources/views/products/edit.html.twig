@@ -1,0 +1,33 @@
+{% extends 'layouts/left-sidebar.html.twig' %}
+
+{% block title %}
+    Редактиране на продукт
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+    <h1>Редактиране на продукт</h1>
+    <div class="col-md-7">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-success">Запиши</button>
+    {{ form_end(form) }}
+    </div>
+    <div class="col-md-5 edit-product-img">
+        {% if product.productImage|length > 0 %}
+            <img width="100%" src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" />
+        {% else %}
+            <h4>Няма качено изображение</h4>
+        {% endif %}
+    </div>
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}
