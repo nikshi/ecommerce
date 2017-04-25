@@ -10,19 +10,32 @@
 
 {% block mainContent %}
     <h1>Редактиране на продукт</h1>
-    <div class="col-md-7">
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_widget(form) }}
-    <button type="submit" class="btn btn-success">Запиши</button>
-    {{ form_end(form) }}
+    <div class="row">
+        <div class="col-md-7">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-success">Запиши продукта</button>
+        {{ form_end(form) }}
+            <h3>Добави промоция за продукта</h3>
+            {{ form_start(promotionForm) }}
+            {{ form_widget(promotionForm) }}
+            {{ form_widget(promotionForm) }}
+            <button type="submit" class="btn btn-success">Запипи промоцията</button>
+            {{ form_end(promotionForm) }}
+        </div>
+        <div class="col-md-5 edit-product-img">
+            {% if product.productImage|length > 0 %}
+                <img width="100%" src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" />
+            {% else %}
+                <h4>Няма качено изображение</h4>
+            {% endif %}
+        </div>
     </div>
-    <div class="col-md-5 edit-product-img">
-        {% if product.productImage|length > 0 %}
-            <img width="100%" src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" />
-        {% else %}
-            <h4>Няма качено изображение</h4>
-        {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
     </div>
 {% endblock %}
 

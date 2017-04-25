@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Promotion;
 use AppBundle\Entity\Review;
+use AppBundle\Form\ProductPromotionType;
 use AppBundle\Form\ProductType;
 use AppBundle\Form\ReviewsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,7 +44,6 @@ class ProductController extends Controller
 
         $price_calculator = $this->get('app.price_calculator');
         $price_calculator->setProductsPromoPrice($products);
-        dump($products);
         return $this->render('products/blocks.html.twig', ['products'=> $products, 'category' => $category]);
     }
 
@@ -55,14 +56,9 @@ class ProductController extends Controller
     public function ProductBySlugAction($slug = null)
     {
         $reviewForm = $this->createForm(ReviewsType::class, null, array());
-
-        $_product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
-
+        $product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
         $price_calculator = $this->get('app.price_calculator');
-
-        $product = $price_calculator->setProductPromoPrice($_product);
-
-        dump($product);
+        $price_calculator->setProductPromoPrice($product);
 
         return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
     }
@@ -82,7 +78,8 @@ class ProductController extends Controller
         $reviewForm = $this->createForm(ReviewsType::class, $review, array());
 
         $reviewForm->handleRequest($request);
-
+        $price_calculator = $this->get('app.price_calculator');
+        $price_calculator->setProductPromoPrice($product);
         if($reviewForm->isSubmitted() && $reviewForm->isValid()){
 
             $review->setProduct($product);
@@ -90,9 +87,11 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($review);
             $em->flush();
-
+dump($product->getCategory()->getSlug());
             $this->addFlash('success', "Ревюто е добавено успешно");
-            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
+
+            return $this->redirectToRoute("product_by_slug", array('category' => $product->getCategory()->getSlug(), 'slug'=>$product->getSlug()));
+//            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
         }else {
             $this->addFlash('error', "Грешка!");
             return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
@@ -121,10 +120,16 @@ class ProductController extends Controller
             );
         }
 
+        $promotion = $em->getRepository('AppBundle:Promotion')->findOneBy(['product'=>$product]);
+
+        $promotionForm = $this->createForm(ProductPromotionType::class, $promotion, array(
+            'action' => $this->generateUrl('save_product_promotion', array('id' => $product->getId())
+        )));
+
         $form = $this->createForm(ProductType::class, $product, array(
             'categories' => $this->getProductsCategories()
         ) );
-        return $this->render('products/edit.html.twig', ['form'=> $form->createView(), 'product' => $product]);
+        return $this->render('products/edit.html.twig', ['form'=> $form->createView(), 'product' => $product, 'promotionForm'=> $promotionForm->createView() ]);
     }
 
 

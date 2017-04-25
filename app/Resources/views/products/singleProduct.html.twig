@@ -21,6 +21,9 @@
         </div>
         <div class="col-md-6">
             <h1>{{ product.name }}</h1>
+            {% if  product.qty %}
+            <span class="product-qty">Налично количество: <strong>{{ product.qty }}</strong></span>
+            {% endif %}
             <div class="product-description">
                 <p>{{ product.description }}</p>
                 <div class="order-block">

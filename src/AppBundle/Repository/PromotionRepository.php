@@ -13,7 +13,6 @@ class PromotionRepository extends \Doctrine\ORM\EntityRepository
 {
 
     /**
-     *
      * @param Category $category
      * @return int
      */

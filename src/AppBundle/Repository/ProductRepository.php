@@ -32,6 +32,10 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->select('p')
             ->where($qb->expr()->eq('p.category', ':catId') )
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->gt('p.qty', 0),
+                $qb->expr()->isNull('p.qty')
+            ))
             ->setParameter(':catId', $category)
             ->orderBy('p.id', 'DESC')
             ->getQuery();

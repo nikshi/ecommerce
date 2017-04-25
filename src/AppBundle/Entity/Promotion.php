@@ -175,5 +175,21 @@ class Promotion
     {
         $this->name = $name;
     }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+    }
 }
 
