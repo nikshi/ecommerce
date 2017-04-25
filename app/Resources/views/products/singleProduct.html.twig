@@ -1,0 +1,81 @@
+{% extends 'layouts/right-sidebar.html.twig' %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="product-image">
+                <img width="100%" src="{{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <div class="product-description">
+                <p>{{ product.description }}</p>
+                <div class="order-block">
+                    <div class="product-price">
+                        <span class="price-label">Цена:</span><span id="price_value">{{ product.price|number_format(2, '.', ',') }}</span>лв.
+                    </div>
+                    <form class="order-form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" id="order_count" value="1">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary">Поръчай</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3>Клиентски ревюта</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="single-product-reviews">
+                {% for review in product.reviews %}
+                    <div class="review">
+                        <div class="review-header">
+                            <span class="review-rating"><i class="fa fa-star" aria-hidden="true"></i><span class="value">{{ review.rating }}</span> / 5</span>
+                            <span class="review-author"><i class="fa fa-user" aria-hidden="true"></i> {{ review.author }}</span>
+                            <span class="review-date"><i class="fa fa-calendar" aria-hidden="true"></i>{{ review.createdOn|date("F jS \\a\\t g:ia") }}</span>
+                        </div>
+                        <div class="review-comment">
+                            <p>{{ review.comment }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 review-form">
+            {{ form_start(reviewForm) }}
+            {{ form_widget(reviewForm) }}
+            <button type="submit" class="btn btn-success">Изпрати ревюто</button>
+            {{ form_end(reviewForm) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

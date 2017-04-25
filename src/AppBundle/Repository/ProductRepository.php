@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * ProductRepository
  *
@@ -10,4 +13,28 @@ namespace AppBundle\Repository;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function fetchProductsByUser($userId){
+
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb->select('p')
+            ->where($qb->expr()->eq('p.user', ':userId') )
+            ->setParameter(':userId', $userId)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery();
+    }
+
+
+    public function fetchProductsByCat(Category $category){
+
+        $qb = $this->createQueryBuilder('p');
+
+        return $qb->select('p')
+            ->where($qb->expr()->eq('p.category', ':catId') )
+            ->setParameter(':catId', $category)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery();
+    }
+
 }

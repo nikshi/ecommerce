@@ -40,6 +40,10 @@ class Product
     /**
      * @var Category
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
+     *
+     * @Assert\NotNull(
+     *     message="Изберете категория"
+     * )
      */
     private $category;
 
@@ -53,6 +57,10 @@ class Product
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=false)
+     *
+     * @Assert\NotBlank(
+     *     message="Въведете име на продукта!"
+     * )
      *
      */
     private $name;
@@ -75,9 +83,19 @@ class Product
      * @var string
      *
      * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=true)
+     *
+     * @Assert\NotBlank(
+     *     message="Въведете цена на продукта"
+     * )
      */
 
     private $price;
+
+
+    /**
+     * @var float
+     */
+    private $promoPrice = 0;
 
     /**
      * @var int
@@ -94,7 +112,18 @@ class Product
     private $productImage;
 
 
+    /**
+     * @var string
+     */
+
     private $image_form;
+
+
+    /**
+     * @var Promotion[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="product")
+     */
+    private $promotions;
 
     /**
      * @var \DateTime
@@ -350,6 +379,38 @@ class Product
     public function setImageForm($image_form)
     {
         $this->image_form = $image_form;
+    }
+
+    /**
+     * @return Promotion[]|ArrayCollection
+     */
+    public function getPromotions()
+    {
+        return $this->promotions;
+    }
+
+    /**
+     * @param Promotion[]|ArrayCollection $promotions
+     */
+    public function setPromotions($promotions)
+    {
+        $this->promotions = $promotions;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPromoPrice()
+    {
+        return $this->promoPrice;
+    }
+
+    /**
+     * @param float $promoPrice
+     */
+    public function setPromoPrice($promoPrice)
+    {
+        $this->promoPrice = $promoPrice;
     }
 
 

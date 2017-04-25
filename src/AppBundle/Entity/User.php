@@ -136,6 +136,13 @@ class User implements UserInterface
     private $roles;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="cash", type="float", nullable=true)
+     */
+    private $cash;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_on", type="datetimetz", nullable=true)
@@ -476,6 +483,22 @@ class User implements UserInterface
     public function setOldPassword($oldPassword)
     {
         $this->oldPassword = $oldPassword;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCash()
+    {
+        return $this->cash;
+    }
+
+    /**
+     * @param float $cash
+     */
+    public function setCash($cash)
+    {
+        $this->cash = $cash;
     }
 
 }

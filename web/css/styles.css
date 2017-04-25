@@ -160,6 +160,122 @@ header {
     color: #ccc;
 }
 
+
+/*Category list*/
+
+.category-block-nav {
+    list-style: none;
+    padding-left: 0;
+    text-align: right;
+}
+
+.category-block-nav li{
+    display: inline-block;
+    margin-left: 15px;
+}
+
+
+
+.category-block-products {
+    list-style: none;
+    padding-left: 0;
+}
+
+.category-block-products li{
+    display: inline-block;
+    width: 264px;
+    border: 1px solid #f3f3f3;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    padding: 5px;
+    transition: all .5s;
+}
+
+.category-block-products li:hover {
+    -webkit-box-shadow: 7px 5px 17px 0px rgba(204,204,204,1);
+    -moz-box-shadow: 7px 5px 17px 0px rgba(204,204,204,1);
+    box-shadow: 7px 5px 17px 0px rgba(204,204,204,1);
+    opacity: 0.8;
+}
+
+.category-block-product-content {
+    padding: 10px;
+}
+
+.category-block-product-price {
+    font-size: 16px;
+    text-align: right;
+    position: relative;
+}
+
+.category-block-product-content .product-title {
+    height: 50px;
+    overflow: hidden;
+}
+
+.category-block-product-image {
+    height: 150px;
+    background-size: cover;
+}
+
+
+span.old-price {
+    position: absolute;
+    right: -5px;
+    top: -15px;
+    font-size: 14px;
+    color: #9c9c9c;
+}
+
+/*Single Product*/
+
+.order-block {
+    margin-top: 30px;
+}
+
+.order-form {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.order-form .row>div {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.single-product-reviews .review {
+    background-color: #f9f9f9;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.single-product-reviews .review-header {
+    color: #939393;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.single-product-reviews .review-header>span {
+    margin-right: 10px;
+}
+.single-product-reviews .review-header .review-rating .value {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.single-product-reviews .review-header i {
+    margin-right: 3px;
+}
+
+.single-product-reviews .review-comment {
+    padding: 15px;
+}
+
+.review-form .radio {
+    display: inline-block;
+    margin-right: 15px;
+}
+
 /*Footer*/
 
 footer {

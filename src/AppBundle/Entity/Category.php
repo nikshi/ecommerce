@@ -17,6 +17,7 @@ class Category
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->promotions = new ArrayCollection();
     }
 
     /**
@@ -35,6 +36,13 @@ class Category
      */
     private $name;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     */
+    private $slug;
 
     /**
      * @var Product[]|ArrayCollection
@@ -57,6 +65,13 @@ class Category
      */
     private $image;
 
+
+    /**
+     * @var Promotion[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="category")
+     */
+
+    private $promotions;
 
     /**
      * Get id
@@ -138,6 +153,54 @@ class Category
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+    /**
+     * @return Product[]|ArrayCollection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Product[]|ArrayCollection $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    /**
+     * @return Promotion[]|ArrayCollection
+     */
+    public function getPromotions()
+    {
+        return $this->promotions;
+    }
+
+    /**
+     * @param Promotion[]|ArrayCollection $promotions
+     */
+    public function setPromotions($promotions)
+    {
+        $this->promotions = $promotions;
     }
 }
 

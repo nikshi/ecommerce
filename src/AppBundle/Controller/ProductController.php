@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Review;
 use AppBundle\Form\ProductType;
+use AppBundle\Form\ReviewsType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +20,86 @@ class ProductController extends Controller
 {
 
     private $limit_per_page = 5;
+
+
+    /**
+     * @Route("/category/{categorySlug}", name="products_by_cat_slug")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function ProductsByCatSlugAction(Request $request, $categorySlug)
+    {
+
+        $category = $this->getDoctrine()->getRepository('AppBundle:Category')->findOneBy(['slug' => $categorySlug]);
+        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->fetchProductsByCat($category);
+
+        $paginator  = $this->get('knp_paginator');
+        $products = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/, $this->limit_per_page/*limit per page*/
+        );
+
+        $price_calculator = $this->get('app.price_calculator');
+        $price_calculator->setProductsPromoPrice($products);
+        dump($products);
+        return $this->render('products/blocks.html.twig', ['products'=> $products, 'category' => $category]);
+    }
+
+    /**
+     * @Route("/category/{category}/{slug}", name="product_by_slug")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function ProductBySlugAction($slug = null)
+    {
+        $reviewForm = $this->createForm(ReviewsType::class, null, array());
+
+        $_product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
+
+        $price_calculator = $this->get('app.price_calculator');
+
+        $product = $price_calculator->setProductPromoPrice($_product);
+
+        dump($product);
+
+        return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
+    }
+
+    /**
+     * @Route("/category/{category}/{slug}")
+     * @Method("POST")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function SendReviewProcess(Request $request, $slug)
+    {
+        $product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
+
+        $review = new Review();
+
+        $reviewForm = $this->createForm(ReviewsType::class, $review, array());
+
+        $reviewForm->handleRequest($request);
+
+        if($reviewForm->isSubmitted() && $reviewForm->isValid()){
+
+            $review->setProduct($product);
+            $review->setCreatedOn(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($review);
+            $em->flush();
+
+            $this->addFlash('success', "Ревюто е добавено успешно");
+            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
+        }else {
+            $this->addFlash('error', "Грешка!");
+            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
+        }
+
+    }
+
 
     /**
      * @Route("/user/products/edit/{id}", name="edit_product")
@@ -148,10 +230,8 @@ class ProductController extends Controller
 
     public function ProductsAction(Request $request)
     {
-
-        $em    = $this->get('doctrine.orm.entity_manager');
-        $dql   = "SELECT a FROM AppBundle:Product a WHERE a.user = ". $this->getUser()->getId();
-        $query = $em->createQuery($dql);
+        $userId = $this->getUser()->getId();
+        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->fetchProductsByUser($userId);
 
         $paginator  = $this->get('knp_paginator');
         $products = $paginator->paginate(
@@ -213,15 +293,16 @@ class ProductController extends Controller
             if ($file){
                 $filename = md5($product->getName() . '' . $product->getCreatedOn()->format('Y-m-d H:i:s')) . '.' . $file->getClientOriginalExtension();
                 $product->setProductImage($filename);
+            } else {
+                $this->addFlash('error', "Изберете изображение за продукта");
+                return $this->render('products/addproduct.html.twig', ['form'=> $form->createView()]);
             }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
 
-            if ($file) {
-                $file->move($this->get('kernel')->getRootDir() . '/../web/images/products/' . $product->getId(), $filename);
-            }
+            $file->move($this->get('kernel')->getRootDir() . '/../web/images/products/' . $product->getId(), $filename);
 
             $product->setSlug($slug . '-' . $product->getId());
             $em->persist($product);
@@ -231,7 +312,7 @@ class ProductController extends Controller
 
             return $this->redirectToRoute('user_products');
         }else {
-            return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
+            return $this->render('products/addproduct.html.twig', ['form'=> $form->createView()]);
         }
     }
 

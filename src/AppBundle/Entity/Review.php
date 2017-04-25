@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Review
  *
- * @ORM\Table(name="review")
+ * @ORM\Table(name="reviews")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ReviewRepository")
  */
 class Review
@@ -35,12 +36,29 @@ class Review
      */
     private $comment;
 
+    /**
+     * @var string
+     * @ORM\Column(name="author", type="text")
+     * @Assert\NotBlank(
+     *     message="Полето Автор не може да е празно"
+     * )
+     */
+    private $author;
+
 
     /**
      * @var Product
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="reviews")
      */
     private $product;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_on", type="datetimetz")
+     */
+    private $createdOn;
+
 
     /**
      * Get id
@@ -114,6 +132,38 @@ class Review
     public function setProduct($product)
     {
         $this->product = $product;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
     }
 }
 

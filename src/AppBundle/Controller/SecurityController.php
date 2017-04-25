@@ -51,6 +51,7 @@ class SecurityController extends Controller
 
             $user->addRole($userRole);
             $user->setPassword($hashedPassword);
+            $user->setCash(1000);
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
