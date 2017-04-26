@@ -45,7 +45,7 @@ class Promotion
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="promotions")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="promotions", cascade={"persist"})
      */
 
     private $category;
@@ -53,7 +53,7 @@ class Promotion
 
     /**
      * @var Product
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="promotions")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product", inversedBy="promotions", cascade={"persist"})
      */
     private $product;
 

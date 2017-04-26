@@ -74,9 +74,7 @@ class ProductType extends AbstractType
                 'categories' => null
             ]
         );
-//        $resolver->setRequired(array(
-//            'categories'
-//        ));
+
     }
 
 

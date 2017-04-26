@@ -32,14 +32,14 @@ class Product
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="products", cascade={"persist"})
      */
     private $user;
 
 
     /**
      * @var Category
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="products", cascade={"persist"})
      *
      * @Assert\NotNull(
      *     message="Изберете категория"
@@ -49,7 +49,7 @@ class Product
 
     /**
      * @var Review[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Review", mappedBy="product", cascade={"remove"})
      */
     private $reviews;
 
@@ -121,7 +121,7 @@ class Product
 
     /**
      * @var Promotion[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="product", cascade={"remove"})
      */
     private $promotions;
 

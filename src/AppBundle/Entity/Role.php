@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Role
  *
- * @ORM\Table(name="role")
+ * @ORM\Table(name="roles")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RoleRepository")
  */
 class Role
@@ -29,11 +29,17 @@ class Role
      */
     private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     */
+    private $title;
 
     /**
      * @var User[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="roles")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="role")
      */
 
     private $users;
@@ -76,6 +82,22 @@ class Role
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 }
 

@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function fetchAllRoles(){
+        $qb = $this->createQueryBuilder('a');
+        return $qb->select('a')
+            ->orderBy('a.id', 'DESC')
+            ->getQuery();
+    }
+
 }

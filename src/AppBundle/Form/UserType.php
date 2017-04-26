@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -89,17 +90,25 @@ class UserType extends AbstractType
             ->add('phone', TextType::class, array(
                 'attr' => array(
                     'class'=>'',
-
                 ),
                 'label' => 'Телефон',
                 'required' => false,
+            ))
+            ->add('role', ChoiceType::class, array(
+                'choices'       => array_flip($options['roles']),
+                'placeholder'   => 'Изберете роля',
+                'label'         => 'Роля',
+                'required'=> false
             ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            ['data_class' => User::class]
+            [
+                'data_class' => User::class,
+                'roles' => null
+            ]
         );
 
     }

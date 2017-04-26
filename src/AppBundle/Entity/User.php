@@ -24,7 +24,6 @@ class User implements UserInterface
 //        $this->lastLogin = new \DateTime();
 //        $this->createdOn = new \DateTime();
 
-        $this->roles    = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
 
@@ -127,13 +126,12 @@ class User implements UserInterface
     private $phone;
 
     /**
-     * @var Role[]
+     * @var Role
      *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role", inversedBy="users")
-     * @ORM\JoinTable(name="user_roles", joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},  inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id") })")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Role", inversedBy="users")
      *
      */
-    private $roles;
+    private $role;
 
     /**
      * @var float
@@ -152,7 +150,7 @@ class User implements UserInterface
     /**
      * @var Product[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="user", cascade={"remove"})
      *
      */
 
@@ -297,28 +295,6 @@ class User implements UserInterface
         return $this->lastLogin;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
-    {
-        return array_map(function(Role $r) {
-            return $r->getName();
-        }, $this->roles->toArray());
-    }
 
     /**
      * Returns the salt that was originally used to encode the password.
@@ -352,11 +328,6 @@ class User implements UserInterface
     {
         return null;
     }
-
-    public function addRole(Role $role){
-        $this->roles->add($role);
-    }
-
 
     /**
      * @return string
@@ -502,5 +473,42 @@ class User implements UserInterface
         $this->cash = $cash;
     }
 
+    /**
+     * @return Role
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        $role[] = $this->role->getName();
+        return $role;
+    }
 }
 

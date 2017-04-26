@@ -46,7 +46,7 @@ class Category
 
     /**
      * @var Product[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Product", mappedBy="category", cascade={"remove"} )
      */
 
     private $products;
@@ -74,7 +74,7 @@ class Category
 
     /**
      * @var Promotion[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="category", cascade={"remove"})
      */
 
     private $promotions;

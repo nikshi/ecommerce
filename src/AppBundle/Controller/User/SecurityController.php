@@ -23,8 +23,17 @@ class SecurityController extends Controller
      */
     public function registerAction()
     {
-        $form = $this->createForm(UserType::class);
-        return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
+        $form = $this->createForm(UserType::class, null, array(
+            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+        ));
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $form->remove('role');
+            return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
+        } else {
+            return $this->render('user/adduser.html.twig', ['form'=> $form->createView()]);
+        }
+
     }
 
     /**
@@ -36,7 +45,9 @@ class SecurityController extends Controller
     public function registerProcess(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user,array(
+            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+        ));
         $form->handleRequest($request);
 
         $encoder = $this->get('security.password_encoder');
@@ -45,10 +56,15 @@ class SecurityController extends Controller
             $user->setCreatedOn(new \DateTime());
             $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
 
-            $userRole = $this->getDoctrine()->getRepository(Role::class)
+            $userRole = $this->getDoctrine()->getRepository('AppBundle:Role')
                 ->findOneBy(['name' => 'ROLE_USER']);
 
-            $user->addRole($userRole);
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                $userRole = $this->getDoctrine()->getRepository('AppBundle:Role')
+                    ->find($request->request->get('user')['role']);
+            }
+
+            $user->setRole($userRole);
             $user->setPassword($hashedPassword);
             $user->setCash(1000);
             $em = $this->getDoctrine()->getManager();

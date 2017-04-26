@@ -1,0 +1,115 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block title %}
+Добавяне на потребител
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+    <h1>Добавяне на потребител</h1>
+        {{ form_start(form) }}
+    <h3>Потребителски данни</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group {% if form.email.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group {% if form.name.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group {% if form.password.first.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.password.first) }}
+                {{ form_widget(form.password.first) }}
+                {{ form_errors(form.password.first) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group {% if form.password.second.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.password.second) }}
+                {{ form_widget(form.password.second) }}
+                {{ form_errors(form.password.second) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group {% if form.role.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.role) }}
+                {{ form_widget(form.role) }}
+                {{ form_errors(form.role) }}
+            </div>
+        </div>
+    </div>
+    <h3>Данни за доставка</h3>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group {% if form.area.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.area) }}
+                {{ form_widget(form.area) }}
+                {{ form_errors(form.area) }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group {% if form.municipality.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.municipality) }}
+                {{ form_widget(form.municipality) }}
+                {{ form_errors(form.municipality) }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group {% if form.municipality.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.city) }}
+                {{ form_widget(form.city) }}
+                {{ form_errors(form.city) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group {% if form.phone.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone) }}
+                {{ form_errors(form.phone) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group {% if form.address.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.address) }}
+                {{ form_widget(form.address) }}
+                {{ form_errors(form.address) }}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group {% if form.post_code.vars.errors|length %} has-error {% endif %}">
+                {{ form_label(form.post_code) }}
+                {{ form_widget(form.post_code) }}
+                {{ form_errors(form.post_code) }}
+            </div>
+        </div>
+    </div>
+
+        <input type="submit" value="Регистрирай ме" class="btn btn-success" formnovalidate />
+        {{ form_end(form) }}
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}
