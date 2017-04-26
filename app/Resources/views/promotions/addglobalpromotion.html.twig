@@ -1,0 +1,33 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block title %}
+    Глобална промоция
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+    <h1>Добавяне на промоция за всички продукти</h1>
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_start(promotionForm) }}
+            {{ form_widget(promotionForm) }}
+            {{ form_widget(promotionForm) }}
+            <button type="submit" class="btn btn-success">Запиши промоцията</button>
+            {{ form_end(promotionForm) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

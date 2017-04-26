@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\User;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends Controller
 {
-
 
     /**
      * @Route("/register", name="user_register")

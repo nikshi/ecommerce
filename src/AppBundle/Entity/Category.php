@@ -67,6 +67,12 @@ class Category
 
 
     /**
+     * @var string
+     */
+
+    private $image_form;
+
+    /**
      * @var Promotion[]|ArrayCollection
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Promotion", mappedBy="category")
      */
@@ -201,6 +207,22 @@ class Category
     public function setPromotions($promotions)
     {
         $this->promotions = $promotions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageForm()
+    {
+        return $this->image_form;
+    }
+
+    /**
+     * @param string $image_form
+     */
+    public function setImageForm($image_form)
+    {
+        $this->image_form = $image_form;
     }
 }
 

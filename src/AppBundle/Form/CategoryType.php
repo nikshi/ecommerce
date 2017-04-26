@@ -4,6 +4,8 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,11 +27,12 @@ class CategoryType extends AbstractType
                 ),
                 'label' => 'Описание',
             ))
-            ->add('image', TextType::class, array(
+            ->add('image_form', FileType::class, array(
                 'attr' => array(
                     'class'=>'',
                 ),
                 'label' => 'Изображение',
+                'required' => false
             ));
 
     }

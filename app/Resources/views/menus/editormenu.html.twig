@@ -1,0 +1,15 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <h4>Администратор меню</h4>
+{% else %}
+    <h4>Едитор меню</h4>
+{% endif %}
+<ul class="editor-menu">
+    <li><a href="{{ path('editor_products') }}">Управление на продукти</a></li>
+    <li><a href="{{ path('categories_list') }}">Управление на категории</a></li>
+    <li><a href="{{ path('add_global_promotion') }}">Глобална промоция</a></li>
+    {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('list_users') }}">Управление на потребители</a></li>
+        <li><a href="{{ path('add_global_promotion') }}">Забрана на потребител</a></li>
+        <li><a href="{{ path('add_global_promotion') }}">Забрана по IP</a></li>
+    {% endif %}
+</ul>

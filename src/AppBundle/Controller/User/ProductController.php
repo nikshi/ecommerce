@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\User;
 
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Promotion;
@@ -18,6 +18,11 @@ use Cocur\Slugify\Slugify;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+
+/**
+ * @Route("/admin")
+ */
+
 class ProductController extends Controller
 {
 
@@ -25,16 +30,16 @@ class ProductController extends Controller
 
 
     /**
-     * @Route("/category/{categorySlug}", name="products_by_cat_slug")
+     * @Route("products", name="user_products")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security(expression="has_role('ROLE_USER')")
      */
 
-    public function ProductsByCatSlugAction(Request $request, $categorySlug)
+    public function ProductsAction(Request $request)
     {
-
-        $category = $this->getDoctrine()->getRepository('AppBundle:Category')->findOneBy(['slug' => $categorySlug]);
-        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->fetchProductsByCat($category);
+        $userId = $this->getUser()->getId();
+        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->fetchProductsByUser($userId);
 
         $paginator  = $this->get('knp_paginator');
         $products = $paginator->paginate(
@@ -42,66 +47,11 @@ class ProductController extends Controller
             $request->query->getInt('page', 1)/*page number*/, $this->limit_per_page/*limit per page*/
         );
 
-        $price_calculator = $this->get('app.price_calculator');
-        $price_calculator->setProductsPromoPrice($products);
-        return $this->render('products/blocks.html.twig', ['products'=> $products, 'category' => $category]);
+        return $this->render('products/list.html.twig', ['products'=> $products]);
     }
 
     /**
-     * @Route("/category/{category}/{slug}", name="product_by_slug")
-     * @Method("GET")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-
-    public function ProductBySlugAction($slug = null)
-    {
-        $reviewForm = $this->createForm(ReviewsType::class, null, array());
-        $product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
-        $price_calculator = $this->get('app.price_calculator');
-        $price_calculator->setProductPromoPrice($product);
-
-        return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
-    }
-
-    /**
-     * @Route("/category/{category}/{slug}")
-     * @Method("POST")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-
-    public function SendReviewProcess(Request $request, $slug)
-    {
-        $product = $this->getDoctrine()->getRepository('AppBundle:Product')->findOneBy(['slug' => $slug]);
-
-        $review = new Review();
-
-        $reviewForm = $this->createForm(ReviewsType::class, $review, array());
-
-        $reviewForm->handleRequest($request);
-        $price_calculator = $this->get('app.price_calculator');
-        $price_calculator->setProductPromoPrice($product);
-        if($reviewForm->isSubmitted() && $reviewForm->isValid()){
-
-            $review->setProduct($product);
-            $review->setCreatedOn(new \DateTime());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($review);
-            $em->flush();
-dump($product->getCategory()->getSlug());
-            $this->addFlash('success', "Ревюто е добавено успешно");
-
-            return $this->redirectToRoute("product_by_slug", array('category' => $product->getCategory()->getSlug(), 'slug'=>$product->getSlug()));
-//            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
-        }else {
-            $this->addFlash('error', "Грешка!");
-            return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
-        }
-
-    }
-
-
-    /**
-     * @Route("/user/products/edit/{id}", name="edit_product")
+     * @Route("products/edit/{id}", name="edit_product")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -132,9 +82,8 @@ dump($product->getCategory()->getSlug());
         return $this->render('products/edit.html.twig', ['form'=> $form->createView(), 'product' => $product, 'promotionForm'=> $promotionForm->createView() ]);
     }
 
-
     /**
-     * @Route("/user/products/edit/{id}")
+     * @Route("products/edit/{id}")
      * @Method("POST")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -187,7 +136,7 @@ dump($product->getCategory()->getSlug());
 
             $this->addFlash('success', "Продуктът е успешно редактиран");
 
-            return $this->redirectToRoute("user_products");
+            return $this->redirectToRoute("edit_product", array('id'=>$product->getId()));
         }else {
             $this->addFlash('error', "Грешка!");
             return $this->render('products/edit.html.twig', ['form'=> $form->createView()]);
@@ -196,7 +145,7 @@ dump($product->getCategory()->getSlug());
 
 
     /**
-     * @Route("/user/products/delete", name="delete_product")
+     * @Route("admin/products/delete", name="delete_product")
      * @Method("POST")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -227,28 +176,7 @@ dump($product->getCategory()->getSlug());
     }
 
     /**
-     * @Route("/user/products", name="user_products")
-     * @Method("GET")
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Security(expression="has_role('ROLE_USER')")
-     */
-
-    public function ProductsAction(Request $request)
-    {
-        $userId = $this->getUser()->getId();
-        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->fetchProductsByUser($userId);
-
-        $paginator  = $this->get('knp_paginator');
-        $products = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/, $this->limit_per_page/*limit per page*/
-        );
-
-        return $this->render('products/list.html.twig', ['products'=> $products]);
-    }
-
-    /**
-     * @Route("/user/products/addproduct", name="add_product")
+     * @Route("products/addproduct", name="add_product")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -263,7 +191,7 @@ dump($product->getCategory()->getSlug());
     }
 
     /**
-     * @Route("/user/products/addproduct")
+     * @Route("products/addproduct")
      * @Method("POST")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -321,12 +249,10 @@ dump($product->getCategory()->getSlug());
         }
     }
 
-
+//    TODO Create service
 //    Helper methods
 
-
     public function getProductsCategories(){
-
         $em     = $this->getDoctrine();
         $_categories   = $em->getRepository('AppBundle:Category')->findAll();
 
@@ -335,7 +261,6 @@ dump($product->getCategory()->getSlug());
         foreach ($_categories as $category){
             $categories[$category->getId()] = $category->getName();
         }
-
         return $categories;
     }
 

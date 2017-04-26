@@ -1,19 +1,15 @@
 {% extends 'layouts/backend.html.twig' %}
 
 {% block title %}
-    Добавяне на продукт
-{% endblock %}
-
-{% block leftSidebar %}
-    Left Sidebar
+    Добавяне на категория
 {% endblock %}
 
 {% block mainContent %}
-    <h1>Добавяне на продукт</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <h1>Добавяне на категория</h1>
+    {{ form_start(categoryForm) }}
+    {{ form_widget(categoryForm) }}
     <button type="submit" class="btn btn-success">Добави</button>
-    {{ form_end(form) }}
+    {{ form_end(categoryForm) }}
 {% endblock %}
 
  {% block stylesheets %}

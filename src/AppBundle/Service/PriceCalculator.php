@@ -60,9 +60,9 @@ class PriceCalculator
         foreach ($product_category_promotions as $promotion){
             if($promotion->getPercent() > $biggestPercent) $biggestPercent = $promotion->getPercent();
         }
-//        $all_products_biggest_promo     = $this->enmanager->getRepository('AppBundle:Promotion')->fetchBiggestPromotion();
+        $all_products_biggest_promo     = $this->enmanager->getRepository('AppBundle:Promotion')->fetchBiggestPromotion();
 
-//        if($all_products_biggest_promo->getPercent() > $biggestPercent) $biggestPercent = $all_products_biggest_promo->getPercent();
+        if($all_products_biggest_promo->getPercent() > $biggestPercent) $biggestPercent = $all_products_biggest_promo->getPercent();
 
         if( $biggestPercent > 0 ) {
             $promoPrice = $product->getPrice() - $product->getPrice() * ($biggestPercent / 100);

@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function fetchAllUsers(){
+        $qb = $this->createQueryBuilder('a');
+        return $qb->select('a')
+            ->orderBy('a.id', 'DESC')
+            ->getQuery();
+    }
+
 }

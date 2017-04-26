@@ -16,12 +16,21 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
 
     public function fetchProductsByUser($userId){
 
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('a');
 
-        return $qb->select('p')
-            ->where($qb->expr()->eq('p.user', ':userId') )
+        return $qb->select('a')
+            ->where($qb->expr()->eq('a.user', ':userId') )
             ->setParameter(':userId', $userId)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy('a.id', 'DESC')
+            ->getQuery();
+    }
+
+    public function fetchAllProducts(){
+        $qb = $this->createQueryBuilder('a')
+            ->join('a.category', 'c')
+            ->join('a.user', 'u');
+        return $qb->select('a')
+            ->orderBy('a.id', 'DESC')
             ->getQuery();
     }
 

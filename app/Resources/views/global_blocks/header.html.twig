@@ -68,4 +68,14 @@
             </div>
         </div>
     </div>
+    <div class="header-categories-menu">
+        <div class="container">
+            <ul>
+                {% for slug, category in get_categories.getCategoriesWithSlugs %}
+                    <li><a href="/{{ slug }}" title="{{ category }}">{{ category }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </header>
+

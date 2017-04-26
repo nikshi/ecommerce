@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %} Kalvacha Store</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {{ include('global_blocks/styles.html.twig') }}
+    </head>
+    <body>
+    {{ include('global_blocks/header.html.twig') }}
+    <div class="container main-wrap">
+        <div class="row">
+            <div class="col-md-3 left-sidebar">
+                {% if is_granted('ROLE_EDITOR') %}
+                    {{ include('menus/editormenu.html.twig') }}
+                {% elseif is_granted('ROLE_USER') %}
+                    {{ include('menus/usermenu.html.twig') }}
+                {% endif %}
+            </div>
+
+            <div class="col-md-9 main-content">
+
+                {# ...or you can read and display every flash message available #}
+                {% for type, flash_messages in app.session.flashBag.all %}
+                    {% for flash_message in flash_messages %}
+                        <div class="flash-notice flash-{{ type }}">
+                            {{ flash_message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+
+                {% block mainContent %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+        {% block javascripts %}{% endblock %}
+
+        {{ include(':global_blocks:footer.html.twig') }}
+        {{ include('global_blocks/scripts.html.twig') }}
+    </body>
+</html>

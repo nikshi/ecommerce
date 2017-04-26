@@ -10,3 +10,6 @@ services:
     app.price_calculator:
         class: AppBundle\Service\PriceCalculator
         arguments: ['@doctrine.orm.entity_manager']
+    app.get_categories:
+            class: AppBundle\Service\GetCategories
+            arguments: ['@doctrine.orm.entity_manager']

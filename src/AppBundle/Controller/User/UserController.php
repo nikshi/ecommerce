@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\User;
 
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
@@ -23,15 +23,25 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends Controller
 {
 
+    protected $limit_per_page = 2;
+
     /**
-     * @Route("/")
+     * @Route("admin/users", name="list_users")
      * @Method("GET")
-     * @return \Symfony\Component\HttpFoundation\Response
      */
 
-    public function profileAction()
+    public function profileAction(Request $request)
     {
-        return $this->render('user/profile.html.twig', array());
+
+        $query = $this->getDoctrine()->getRepository('AppBundle:User')->fetchAllUsers();
+
+        $paginator  = $this->get('knp_paginator');
+        $users = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/, $this->limit_per_page/*limit per page*/
+        );
+
+        return $this->render('user/listusers.html.twig', array( 'users' => $users ));
     }
 
     /**

@@ -15,9 +15,6 @@ class ProductPromotionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Име на промоцията'
-            ))
             ->add('percent', NumberType::class, array(
                 'label' => 'Процен на намалението'
             ))

@@ -357,6 +357,7 @@ class User implements UserInterface
         $this->roles->add($role);
     }
 
+
     /**
      * @return string
      */

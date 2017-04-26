@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function fetchAllCategories(){
+        $qb = $this->createQueryBuilder('a');
+        return $qb->select('a')
+            ->orderBy('a.id', 'DESC')
+            ->getQuery();
+    }
+
 }

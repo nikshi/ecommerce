@@ -1,23 +1,18 @@
 {% extends 'layouts/backend.html.twig' %}
 
 {% block title %}
-    Редактиране на продукт
-{% endblock %}
-
-{% block leftSidebar %}
-    Left Sidebar
+    Редакция на категория
 {% endblock %}
 
 {% block mainContent %}
-    <h1>Редактиране на продукт</h1>
+    <h1>Редакция на категория</h1>
     <div class="row">
         <div class="col-md-7">
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-success">Запиши продукта</button>
-        {{ form_end(form) }}
-            <h3>Добави промоция за продукта</h3>
+        {{ form_start(categoryForm) }}
+        {{ form_widget(categoryForm) }}
+        <button type="submit" class="btn btn-success">Запис</button>
+        {{ form_end(categoryForm) }}
+            <h3>Добави промоция за категорията</h3>
             {{ form_start(promotionForm) }}
             {{ form_widget(promotionForm) }}
             {{ form_widget(promotionForm) }}
@@ -25,16 +20,11 @@
             {{ form_end(promotionForm) }}
         </div>
         <div class="col-md-5 edit-product-img">
-            {% if product.productImage|length > 0 %}
-                <img width="100%" src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" />
+            {% if category.image|length > 0 %}
+                <img width="100%" src="{{ asset('images/categories') }}/{{ category.id }}/{{ category.image }}" />
             {% else %}
                 <h4>Няма качено изображение</h4>
             {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-
         </div>
     </div>
 {% endblock %}
