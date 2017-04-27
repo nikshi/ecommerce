@@ -66,77 +66,13 @@
         </tbody>
     </table>
 
-    <form name="car_order_form" class="car_order_form" method="POST" action="{{ path("checkout") }}">
-
-        <h3>Данни за доставка</h3>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label" for="user_name">Име</label>
-                    <input type="text" id="user_name" name="user[name]" class="form-control" value="{% if user.name is defined %}{{ user.name }}{% endif %}">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label" for="user_phone">Телефон</label>
-                    <input type="text" id="user_phone" name="user[phone]" class="form-control" value="{% if user.phone is defined %}{{ user.phone }}{% endif %}">
-
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label" for="user_email">Email</label>
-                    <input type="email" id="user_email" name="user[email]" class="form-control" value="{% if user.email is defined %}{{ user.email }}{% endif %}">
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label" for="user_area">Област</label>
-                    <input type="text" id="user_area" name="user[area]" class="form-control" value="{% if user.area is defined %}{{ user.area }}{% endif %}">
-
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label required" for="user_municipality">Община</label>
-                    <input type="text" id="user_municipality" name="user[municipality]" class="form-control" value="{% if user.municipality is defined %}{{ user.municipality }}{% endif %}">
-
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group ">
-                    <label class="control-label" for="user_city">Населено място</label>
-                    <input type="text" id="user_city" name="user[city]" class="form-control" value="{% if user.city is defined %}{{ user.city }}{% endif %}">
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <div class="form-group ">
-                    <label class="control-label" for="user_post_code">Пощенски код</label>
-                    <input type="text" id="user_post_code" name="user[post_code]" class="form-control" value="{% if user.postCode is defined %}{{ user.postCode }}{% endif %}">
-
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group ">
-                    <label class="control-label" for="user_address">Адрес</label>
-                    <input type="text" id="user_address" name="user[address]" class="form-control" value="{% if user.address is defined %}{{ user.address }}{% endif %}">
-
-                </div>
-            </div>
-        </div>
-        {% for product in products %}
-            <input type="hidden" name="products[{{ product.id }}]" value="{{ product.qty }}">
-        {% endfor %}
+    {{ form_start(orderUser) }}
+    {{ form_widget(orderUser) }}
+    {% for product in products %}
+        <input type="hidden" name="products[{{ product.id }}]" value="{{ product.qty }}">
+    {% endfor %}
     <button type="submit" class="btn btn-success">Изпрати поръчката</button>
-    </form>
-
+    {{ form_end(orderUser) }}
 {% endblock %}
 
  {% block stylesheets %}

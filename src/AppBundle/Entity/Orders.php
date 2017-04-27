@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Orders
@@ -44,8 +45,10 @@ class Orders
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Името не може да е празно"
+     * )
      */
     private $name;
 
@@ -53,6 +56,9 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Емейла не може да бъде празен"
+     * )
      */
     private $email;
 
@@ -113,30 +119,6 @@ class Orders
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Orders
-     */
-    public function setName($name)
-    {
-        $this->client = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -321,6 +303,22 @@ class Orders
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 }
 

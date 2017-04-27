@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\client;
 
+use AppBundle\Entity\Orders;
+use AppBundle\Form\OrderType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,11 @@ class CartController extends Controller
         $products = $this->get('app.cart')->getCartMini();
         $user = $this->getUser();
 
-        return $this->render("order/viewCart.html.twig", array('products' => $products, 'user' => $user));
+        $orderUser = $this->createForm(OrderType::class, $user, array(
+            'action' => $this->generateUrl('checkout')
+        ));
+
+        return $this->render("order/viewCart.html.twig", array('products' => $products, 'orderUser' => $orderUser->createView()));
 
     }
 
@@ -31,24 +37,39 @@ class CartController extends Controller
     public function checkoutProcess(Request $request){
 
         $products = $this->get('app.cart')->getCartMini();
-        $user = $this->getUser();
+//        $user = $this->getUser();
+//        $cart_products = $request->get('products');
+//        $cart_user = $request->get('user');
+//        dump($cart_products);
+//        dump($cart_user);
 
-        $cart_products = $request->get('products');
-        $cart_user = $request->get('user');
+        $order = new Orders();
 
-        foreach ($cart_user as $user_field){
-            if($user_field == '') {
-                dump($user_field);
+        $form = $this->createForm(OrderType::class, $order, array(
+            'action' => $this->generateUrl('checkout')
+        ));
 
-                $this->addFlash('error', "Моля попълнете всички полета за доставка");
-                return $this->render("order/viewCart.html.twig", array('products' => $products, 'user' => $user));
-            }
+        $form->handleRequest($request);
+
+        dump($form);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+//            $form->setProduct($product);
+//            $form->setCreatedOn(new \DateTime());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form);
+            $em->flush();
+
+            $this->addFlash('success', "Ревюто е добавено успешно");
+
+            return $this->render("order/viewCart.html.twig", array('products' => $products, 'orderUser' => $form->createView()));
+        }else {
+            $this->addFlash('error', "Грешка!");
+            return $this->render("order/viewCart.html.twig", array('products' => $products, 'orderUser' => $form->createView()));
         }
-        dump($cart_products);
-        dump($cart_user);
 
 
-        return $this->render("order/viewCart.html.twig", array('products' => $products, 'user' => $user));
     }
 
     /**
