@@ -19,6 +19,7 @@ class Product
     {
         $this->createdOn    = new \DateTime();
         $this->reviews      = new ArrayCollection();
+        $this->orders       = new ArrayCollection();
     }
 
     /**
@@ -36,6 +37,13 @@ class Product
      */
     private $user;
 
+
+    /**
+     * @var Orders[]|ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Orders", mappedBy="products")
+     */
+
+    private $orders;
 
     /**
      * @var Category
@@ -411,6 +419,22 @@ class Product
     public function setPromoPrice($promoPrice)
     {
         $this->promoPrice = $promoPrice;
+    }
+
+    /**
+     * @return Orders[]|ArrayCollection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param Orders[]|ArrayCollection $orders
+     */
+    public function setOrders($orders)
+    {
+        $this->orders = $orders;
     }
 
 

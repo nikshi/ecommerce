@@ -25,6 +25,7 @@ class User implements UserInterface
 //        $this->createdOn = new \DateTime();
 
         $this->products = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     /**
@@ -155,6 +156,12 @@ class User implements UserInterface
      */
 
     private $products;
+
+    /**
+     * @var Orders[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Orders", mappedBy="user", cascade={"remove"})
+     */
+    private $orders;
 
     /**
      * @var \DateTime
@@ -509,6 +516,22 @@ class User implements UserInterface
     {
         $role[] = $this->role->getName();
         return $role;
+    }
+
+    /**
+     * @return Orders[]|ArrayCollection
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * @param Orders[]|ArrayCollection $orders
+     */
+    public function setOrders($orders)
+    {
+        $this->orders = $orders;
     }
 }
 

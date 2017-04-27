@@ -30,11 +30,12 @@
                     <div class="product-price">
                         <span class="price-label">Цена:</span><span id="price_value">{{ product.price|number_format(2, '.', ',') }}</span>лв.
                     </div>
-                    <form class="order-form">
+                    <form class="order-form" method="POST" action="{{ path('add_to_cart') }}">
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <input type="number" class="form-control" id="order_count" value="1">
+                                    <input type="number" class="form-control" name="order_qty" id="order_qty" value="1">
+                                    <input type="hidden" class="form-control" name="product_id" id="product_id" value="{{ product.id }}">
                                 </div>
                             </div>
                             <div class="col-md-6">

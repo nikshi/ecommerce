@@ -13,6 +13,14 @@
 
     <div class="row">
         <div class="col-md-12 main-content">
+            {# ...or you can read and display every flash message available #}
+            {% for type, flash_messages in app.session.flashBag.all %}
+                {% for flash_message in flash_messages %}
+                    <div class="flash-notice flash-{{ type }}">
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
             {% block mainContent %}{% endblock %}
         </div>
     </div>

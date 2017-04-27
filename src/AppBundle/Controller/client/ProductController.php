@@ -63,6 +63,7 @@ class ProductController extends Controller
         $price_calculator = $this->get('app.price_calculator');
         $price_calculator->setProductPromoPrice($product);
 
+        dump($this->get('app.cart')->getCartMini());
         return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
     }
 

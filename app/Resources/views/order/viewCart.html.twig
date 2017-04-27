@@ -1,0 +1,146 @@
+{% extends 'layouts/full-width.html.twig' %}
+
+{% block title %}
+    Количка
+{% endblock %}
+
+{% block leftSidebar %}
+    Left Sidebar
+{% endblock %}
+
+{% block mainContent %}
+
+    <div class="col-md-9">
+        <h1>Количка</h1>
+    </div>
+
+    <table class="table table-hover cart-products-list">
+        <thead>
+            <tr>
+                <th>Изображение</th>
+                <th>Продукт</th>
+                <th>Количество</th>
+                <th>Ед. Цена</th>
+                <th>Ед. Промо цена</th>
+                <th>Крайна цена</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% set total = 0 %}
+        {% for product in products %}
+            <tr>
+                <td>
+                    <img src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" width="70" alt="{{ product.name }}">
+                </td>
+                <td>
+                    <a href="/{{ product.category_slug }}/{{ product.slug }}" title="{{ product.name }}">{{ product.name }}</a>
+                </td>
+                <td class="cart-actions">
+                    <form class="cart-action">
+                        <input type="number" value="{{ product.qty }}" class="form-control qty-input" name="car_product_qty">
+                        <button type="submit" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                    </form>
+                    <form class="cart-action">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    </form>
+                </td>
+                <td class="regular-price">{{ product.price|number_format(2, '.', ' ') }}лв.</td>
+                <td class="promo-price">{% if product.promo_price > 0 %}{{ product.promo_price|number_format(2, '.', ' ') }}лв.{% endif %}</td>
+                <td class="total-price">
+                    {% if product.promo_price > 0 %}
+                        {% set total = total + product.promo_price * product.qty %}
+                        {{ (product.promo_price * product.qty)|number_format(2, '.', ' ') }}
+                    {% else %}
+                        {% set total = total + product.price * product.qty %}
+                        {{ (product.price * product.qty)|number_format(2, '.', ' ') }}
+                    {% endif %}лв.
+                </td>
+            </tr>
+           {% endfor %}
+        <tr>
+            <td colspan="4"></td>
+            <td class="total-label">Крайна цена:</td>
+            <td class="total-value">{{ total|number_format(2, '.', ',') }}лв.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form name="car_order_form" class="car_order_form" method="POST" action="{{ path("checkout") }}">
+
+        <h3>Данни за доставка</h3>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label" for="user_name">Име</label>
+                    <input type="text" id="user_name" name="user[name]" class="form-control" value="{% if user.name is defined %}{{ user.name }}{% endif %}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label" for="user_phone">Телефон</label>
+                    <input type="text" id="user_phone" name="user[phone]" class="form-control" value="{% if user.phone is defined %}{{ user.phone }}{% endif %}">
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label" for="user_email">Email</label>
+                    <input type="email" id="user_email" name="user[email]" class="form-control" value="{% if user.email is defined %}{{ user.email }}{% endif %}">
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label" for="user_area">Област</label>
+                    <input type="text" id="user_area" name="user[area]" class="form-control" value="{% if user.area is defined %}{{ user.area }}{% endif %}">
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label required" for="user_municipality">Община</label>
+                    <input type="text" id="user_municipality" name="user[municipality]" class="form-control" value="{% if user.municipality is defined %}{{ user.municipality }}{% endif %}">
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group ">
+                    <label class="control-label" for="user_city">Населено място</label>
+                    <input type="text" id="user_city" name="user[city]" class="form-control" value="{% if user.city is defined %}{{ user.city }}{% endif %}">
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group ">
+                    <label class="control-label" for="user_post_code">Пощенски код</label>
+                    <input type="text" id="user_post_code" name="user[post_code]" class="form-control" value="{% if user.postCode is defined %}{{ user.postCode }}{% endif %}">
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label class="control-label" for="user_address">Адрес</label>
+                    <input type="text" id="user_address" name="user[address]" class="form-control" value="{% if user.address is defined %}{{ user.address }}{% endif %}">
+
+                </div>
+            </div>
+        </div>
+        {% for product in products %}
+            <input type="hidden" name="products[{{ product.id }}]" value="{{ product.qty }}">
+        {% endfor %}
+    <button type="submit" class="btn btn-success">Изпрати поръчката</button>
+    </form>
+
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

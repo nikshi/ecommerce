@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\User;
+namespace AppBundle\Controller;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
@@ -84,7 +84,7 @@ class SecurityController extends Controller
      * @Route("/login", name="user_login")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
 
         $authenticationUtils = $this->get('security.authentication_utils');

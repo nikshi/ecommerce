@@ -320,3 +320,34 @@ footer .bottom-footer {
     background: #e1e8ef;
     text-align: right;
 }
+
+
+/*Cart*/
+
+.cart-products-list thead th {
+    text-align: center;
+}
+
+td.cart-actions {
+ text-align: center;
+}
+
+.cart-action {
+    display: inline-block;
+}
+
+.qty-input {
+    width: 60px;
+    float: left;
+    margin-right: 5px;
+}
+
+.regular-price, .promo-price, .total-price {
+    text-align: right;
+}
+
+.total-label, .total-value{
+    text-align: right;
+    font-weight: bold;
+    font-size: 16px;
+}

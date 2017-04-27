@@ -16,3 +16,6 @@ services:
     app.get_roles:
                 class: AppBundle\Service\GetRoles
                 arguments: ['@doctrine.orm.entity_manager']
+    app.cart:
+                class: AppBundle\Service\Cart
+                arguments: ['@doctrine.orm.entity_manager', '@session', '@app.price_calculator']
