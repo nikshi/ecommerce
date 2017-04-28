@@ -36,12 +36,7 @@ class CartController extends Controller
      */
     public function checkoutProcess(Request $request){
 
-        $products = $this->get('app.cart')->getCartMini();
-//        $user = $this->getUser();
-//        $cart_products = $request->get('products');
-//        $cart_user = $request->get('user');
-//        dump($cart_products);
-//        dump($cart_user);
+        $cart_products = $this->get('app.cart')->getCartMini();
 
         $order = new Orders();
 
@@ -51,22 +46,31 @@ class CartController extends Controller
 
         $form->handleRequest($request);
 
-        dump($form);
-
         if($form->isSubmitted() && $form->isValid()){
-
+            $product = [];
+            $product_repo = $this->getDoctrine()->getRepository('AppBundle:Product');
+            foreach ($cart_products as $id => $product) {
+                if( $p = $product_repo->find($id) ) {
+                    $products[] = $p;
+                }
+            }
+            dump($products);
 //            $form->setProduct($product);
 //            $form->setCreatedOn(new \DateTime());
+
+            $order->setUser($this->getUser());
+            $order->setProducts($products);
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist($form);
+            $em->persist($order);
             $em->flush();
 
             $this->addFlash('success', "Ревюто е добавено успешно");
 
-            return $this->render("order/viewCart.html.twig", array('products' => $products, 'orderUser' => $form->createView()));
+            return $this->render("order/viewCart.html.twig", array('products' => $cart_products, 'orderUser' => $form->createView()));
         }else {
             $this->addFlash('error', "Грешка!");
-            return $this->render("order/viewCart.html.twig", array('products' => $products, 'orderUser' => $form->createView()));
+            return $this->render("order/viewCart.html.twig", array('products' => $cart_products, 'orderUser' => $form->createView()));
         }
 
 

@@ -38,7 +38,10 @@ class Orders
     /**
      * @var Product[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Product")
-     * @ORM\JoinTable(name="orders_products", joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id")},inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")})
+     * @ORM\JoinTable(name="orders_products", joinColumns={
+     *     @ORM\JoinColumn(name="order_id", referencedColumnName="id"),
+     *     @ORM\JoinColumn(name="")
+     * },inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")})
      */
     private $products;
 

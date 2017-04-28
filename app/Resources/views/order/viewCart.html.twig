@@ -68,9 +68,6 @@
 
     {{ form_start(orderUser) }}
     {{ form_widget(orderUser) }}
-    {% for product in products %}
-        <input type="hidden" name="products[{{ product.id }}]" value="{{ product.qty }}">
-    {% endfor %}
     <button type="submit" class="btn btn-success">Изпрати поръчката</button>
     {{ form_end(orderUser) }}
 {% endblock %}
