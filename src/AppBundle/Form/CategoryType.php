@@ -27,6 +27,13 @@ class CategoryType extends AbstractType
                 ),
                 'label' => 'Описание',
             ))
+            ->add('ordering', TextType::class, array(
+                'attr' => array(
+                    'class' => '',
+                ),
+                'label' => 'Подредба',
+                'required' => false
+            ))
             ->add('image_form', FileType::class, array(
                 'attr' => array(
                     'class'=>'',

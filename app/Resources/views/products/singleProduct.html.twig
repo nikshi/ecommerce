@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block leftSidebar %}
-    Left Sidebar
 {% endblock %}
 
 {% block mainContent %}
@@ -16,7 +15,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="product-image">
-                <img width="100%" src="{{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }}">
+                <a id="single_image" href="{{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }}">
+                    <img width="100%" src="{{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }}">
+                </a>
             </div>
         </div>
         <div class="col-md-6">

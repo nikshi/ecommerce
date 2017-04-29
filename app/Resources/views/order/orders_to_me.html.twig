@@ -1,0 +1,44 @@
+{% extends 'layouts/backend.html.twig' %}
+
+{% block title %}
+    Поръчки
+{% endblock %}
+
+
+{% block mainContent %}
+    <h1>Поръчки на Ваши продукти</h1>
+    <table class="table table-striped table-responsive">
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Дата</td>
+            <td>Продукт</td>
+            <td>Количество</td>
+            <td>Ед. цена</td>
+            <td>Доставка</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.order.createdOn|date("F jS \\a\\t g:ia") }}</td>
+                <td><a href="{{ path("product_by_slug", {'category': order.product.category.slug, 'slug': order.product.slug}) }}" title="{{ order.product.name }}">{{ order.product.name }}</a> </td>
+                <td>{{ order.qty }}</td>
+                <td>{{ order.price }}</td>
+                <td><a href="{{ path('view_order_ship_info', {'id': order.id}) }}"><button class="btn btn-primary"><i class="fa fa-eye" aria-hidden="true"></i></button></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+     display navigation
+    <div class="navigation">
+        {#{{ knp_pagination_render(orders) }}#}
+    </div>
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

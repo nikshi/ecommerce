@@ -42,7 +42,8 @@ twig:
       - 'bootstrap_3_layout.html.twig'
     globals:
         get_categories: "@app.get_categories"
-        cart: "@app.cart"
+        get_order: "@app.order"
+        get_products: "@app.products"
 
 # Doctrine Configuration
 doctrine:

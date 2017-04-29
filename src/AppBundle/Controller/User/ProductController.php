@@ -30,7 +30,7 @@ class ProductController extends Controller
 
 
     /**
-     * @Route("products", name="user_products")
+     * @Route("/products", name="user_products")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")

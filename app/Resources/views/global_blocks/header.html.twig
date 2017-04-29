@@ -12,7 +12,7 @@
                         <img src="{{ asset('images/logo.png') }}" alt="Kalvacha Store">
                     </a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="header-search">
                         <form method="GET">
                             <div class="categories-wrap inline-block">
@@ -28,40 +28,84 @@
                                     <input type="text" class="form-control" placeholder="Text input">
                                     <button class="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                                 </div>
-
                         </form>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="user-area">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <div class="user-menu inline-block">
                                 <span id="user_menu">
                                     <a href="" title="User Menu" class="header-login-btn"><i class="fa fa-bars" aria-hidden="true"></i> {{ app.user.username }}</a>
                                     <ul class="user-manu">
-                                        <li><a href="#" title="Поръчки">Моите поръчки</a></li>
+                                        {% if is_granted('ROLE_EDITOR') %}
+                                        <li><a href="{{ path('editor_products') }}" title="Поръчки от мен">Администрация</a></li>
+                                        {% endif %}
+                                        <li><a href="{{ path("order_from_me") }}" title="Поръчки от мен">Поръчки от мен</a></li>
+                                        <li><a href="{{ path("order_to_me") }}" title="Поръчки за мен">Поръчки за мен</a></li>
                                         <li><a href="{{ path('user_products') }}" title="Продукти">Моите продукти</a></li>
                                         <li><a href="{{ path('edit_user', {'id': app.user.id}) }}" title="Редактиране на профила">Редактиране на профила</a></li>
-                                        <li><a href="{{ path('change_password_user', {'id': app.user.id}) }}" title="Редактиране на профила">Смяна на парола</a></li>
+                                        {#<li><a href="{{ path('change_password_user', {'id': app.user.id}) }}" title="Редактиране на профила">Смяна на парола</a></li>#}
                                     </ul>
                                 </span>
                                 <a href="{{ path('logout') }}" title="Logout" class="header-register-btn">Изход</a>
                             </div>
-                            <div class="header-cart inline-block">
-                                <a href="#" title="view cart">
+                            <div id="header_cart" class="header-cart inline-block">
+                                <a href="{{ path("view_cart") }}" title="view cart">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 </a>
+                                {% if get_order.getOrder.products is defined and get_order.getOrder.products|length > 0 %}
+                                <span class="mini-cart-count"> {{ get_order.getOrder.products_count }}</span>
+                                <div class="mini-cart-list">
+                                    <ul>
+                                        {% for product in get_order.getOrder.products %}
+                                        <li>
+                                            <span class="mini-cart-image">
+                                                <img width="40" src="{{ asset('images/products') }}/{{ product['id'] }}/{{ product['productImage'] }}"></span>
+                                            <span class="mini-cart-name"><a href="/{{ product.category_slug }}/{{ product.slug }}" title="{{ product['name'] }}">{{ product['name'] }}</a></span>
+                                            <span class="mini-cart-qty">{{ product['qty'] }}</span>
+                                            <span class="mini-cart-symbol">X</span>
+                                            {% if product['promo_price'] > 0  %}
+                                                <span class="mini-cart-price">{{ product['promo_price'] }}лв.</span>
+                                            {% else %}
+                                                <span class="mini-cart-price">{{ product['price'] }}лв.</span>
+                                            {% endif %}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
                             </div>
                         {% else %}
                             <div class="user-menu inline-block">
                                 <a href="{{ path('user_login') }}" title="Login" class="header-login-btn"><i class="fa fa-sign-in" aria-hidden="true"></i> Вход</a>
                                 <a href="{{ path('user_register') }}" title="Login" class="header-register-btn">Регистрация</a>
                             </div>
-                            <div class="header-cart inline-block">
-                                <a href="#" title="view cart">
+                            <div id="header_cart" class="header-cart inline-block">
+                                <a href="{{ path("view_cart") }}" title="view cart">
                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 </a>
-
+                                {% if get_order.getOrder.products is defined and get_order.getOrder.products|length > 0 %}
+                                    <span class="mini-cart-count"> {{ get_order.getOrder.products_count }}</span>
+                                    <div class="mini-cart-list">
+                                        <ul>
+                                            {% for product in get_order.getOrder.products %}
+                                                <li>
+                                            <span class="mini-cart-image">
+                                                <img width="40" src="{{ asset('images/products') }}/{{ product['id'] }}/{{ product['productImage'] }}"></span>
+                                                    <span class="mini-cart-name"><a href="/{{ product.category_slug }}/{{ product.slug }}" title="{{ product['name'] }}">{{ product['name'] }}</a></span>
+                                                    <span class="mini-cart-qty">{{ product['qty'] }}</span>
+                                                    <span class="mini-cart-symbol">X</span>
+                                                    {% if product['promo_price'] > 0  %}
+                                                        <span class="mini-cart-price">{{ product['promo_price'] }}лв.</span>
+                                                    {% else %}
+                                                        <span class="mini-cart-price">{{ product['price'] }}лв.</span>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>

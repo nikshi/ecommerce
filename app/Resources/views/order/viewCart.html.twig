@@ -5,71 +5,74 @@
 {% endblock %}
 
 {% block leftSidebar %}
-    Left Sidebar
 {% endblock %}
 
 {% block mainContent %}
 
-    <div class="col-md-9">
-        <h1>Количка</h1>
-    </div>
+    {% if order.products is defined and order.products|length > 0 %}
 
-    <table class="table table-hover cart-products-list">
-        <thead>
-            <tr>
-                <th>Изображение</th>
-                <th>Продукт</th>
-                <th>Количество</th>
-                <th>Ед. Цена</th>
-                <th>Ед. Промо цена</th>
-                <th>Крайна цена</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% set total = 0 %}
-        {% for product in products %}
-            <tr>
-                <td>
-                    <img src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" width="70" alt="{{ product.name }}">
-                </td>
-                <td>
-                    <a href="/{{ product.category_slug }}/{{ product.slug }}" title="{{ product.name }}">{{ product.name }}</a>
-                </td>
-                <td class="cart-actions">
-                    <form class="cart-action">
-                        <input type="number" value="{{ product.qty }}" class="form-control qty-input" name="car_product_qty">
-                        <button type="submit" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                    </form>
-                    <form class="cart-action">
-                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                        <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                    </form>
-                </td>
-                <td class="regular-price">{{ product.price|number_format(2, '.', ' ') }}лв.</td>
-                <td class="promo-price">{% if product.promo_price > 0 %}{{ product.promo_price|number_format(2, '.', ' ') }}лв.{% endif %}</td>
-                <td class="total-price">
-                    {% if product.promo_price > 0 %}
-                        {% set total = total + product.promo_price * product.qty %}
-                        {{ (product.promo_price * product.qty)|number_format(2, '.', ' ') }}
-                    {% else %}
-                        {% set total = total + product.price * product.qty %}
-                        {{ (product.price * product.qty)|number_format(2, '.', ' ') }}
-                    {% endif %}лв.
-                </td>
-            </tr>
-           {% endfor %}
-        <tr>
-            <td colspan="4"></td>
-            <td class="total-label">Крайна цена:</td>
-            <td class="total-value">{{ total|number_format(2, '.', ',') }}лв.</td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="col-md-9">
+            <h1>Количка</h1>
+        </div>
 
-    {{ form_start(orderUser) }}
-    {{ form_widget(orderUser) }}
-    <button type="submit" class="btn btn-success">Изпрати поръчката</button>
+
+        <table class="table table-hover cart-products-list">
+            <thead>
+                <tr>
+                    <th>Изображение</th>
+                    <th>Продукт</th>
+                    <th>Количество</th>
+                    <th>Ед. Цена</th>
+                    <th>Ед. Промо цена</th>
+                    <th>Крайна цена</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for product in order.products %}
+                <tr>
+                    <td>
+                        <img src="{{ asset('images/products') }}/{{ product.id }}/{{ product.productImage }}" width="70" alt="{{ product.name }}">
+                    </td>
+                    <td>
+                        <a href="/{{ product.category_slug }}/{{ product.slug }}" title="{{ product.name }}">{{ product.name }}</a>
+                    </td>
+                    <td class="cart-actions">
+                        <form class="cart-action" method="POST" action="{{ path("edit_product_qty") }}">
+                            <input type="number" value="{{ product.qty }}" class="form-control qty-input" name="cart_product_qty">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                        </form>
+                        <form class="cart-action" method="POST" action="{{ path('cart_delete_product') }}">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        </form>
+                    </td>
+                    <td class="regular-price">{{ product.price|number_format(2, '.', ' ') }}лв.</td>
+                    <td class="promo-price">{% if product.promo_price > 0 %}{{ product.promo_price|number_format(2, '.', ' ') }}лв.{% endif %}</td>
+                    <td class="total-price">
+                        {% if product.promo_price > 0 %}
+                            {{ (product.promo_price * product.qty)|number_format(2, '.', ' ') }}
+                        {% else %}
+                            {{ (product.price * product.qty)|number_format(2, '.', ' ') }}
+                        {% endif %}лв.
+                    </td>
+                </tr>
+               {% endfor %}
+            <tr>
+                <td colspan="4"></td>
+                <td class="total-label">Крайна цена:</td>
+                <td class="total-value">{{ order.total_price|number_format(2, '.', ',') }}лв.</td>
+            </tr>
+            </tbody>
+        </table>
+
+        {{ form_start(orderUser) }}
+        {{ form_widget(orderUser) }}
+        <button type="submit" class="btn btn-success">Изпрати поръчката</button>
     {{ form_end(orderUser) }}
+    {% else %}
+        <h2>Няма продукти в количката</h2>
+    {% endif %}
 {% endblock %}
 
  {% block stylesheets %}

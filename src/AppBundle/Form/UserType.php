@@ -93,12 +93,6 @@ class UserType extends AbstractType
                 ),
                 'label' => 'Телефон',
                 'required' => false,
-            ))
-            ->add('role', ChoiceType::class, array(
-                'choices'       => array_flip($options['roles']),
-                'placeholder'   => 'Изберете роля',
-                'label'         => 'Роля',
-                'required'=> false
             ));
     }
 
@@ -106,8 +100,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => User::class,
-                'roles' => null
+                'data_class' => User::class
             ]
         );
 

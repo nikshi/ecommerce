@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Product;
 use AppBundle\Entity\User;
+use AppBundle\Form\AdminUserType;
 use AppBundle\Form\ProductType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -62,15 +63,14 @@ class UserController extends Controller
             );
         }
 
-        $form = $this->createForm(UserType::class, $user, array(
-            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
-        ));
-
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $form->remove('role');
+            $form = $this->createForm(UserType::class, $user);
             $form->remove('password');
             return $this->render('user/edit.html.twig', ['form'=> $form->createView()]);
         } else {
+            $form = $this->createForm(AdminUserType::class, $user, array(
+                'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+            ));
             $form->remove('password');
             return $this->render('user/edit_admin.html.twig', ['form'=> $form->createView()]);
         }
@@ -85,7 +85,6 @@ class UserController extends Controller
      */
     public function editUserProcess(Request $request, $id)
     {
-
         $em     = $this->getDoctrine();
         $user   = $em->getRepository('AppBundle:User')->find($id);
 
@@ -94,18 +93,26 @@ class UserController extends Controller
                 'No user found with id: '.$user
             );
         }
-        $role = $this->getDoctrine()->getRepository('AppBundle:Role')->find($request->request->get('user')['role']);
-        $user->setRole($role->getId());
 
-        $form = $this->createForm(UserType::class, $user, array(
-            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
-        ));
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(UserType::class, $user);
+        } else {
+
+            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->find($request->request->get('admin_user')['role']);
+
+            $user->setRole($role->getId());
+            $form = $this->createForm(AdminUserType::class, $user, array(
+                'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+            ));
+        }
 
         $form->remove('password');
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $user->setRole($role);
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                $user->setRole($role);
+            }
             $em = $em->getManager();
             $em->persist($user);
             $em->flush();
@@ -117,7 +124,6 @@ class UserController extends Controller
                 $this->addFlash('success', "Успешно редактиране на профил: " .$user->getName() );
                 return $this->redirectToRoute('list_users');
             }
-
 
         }else {
             $this->addFlash('error', "Грешка!");

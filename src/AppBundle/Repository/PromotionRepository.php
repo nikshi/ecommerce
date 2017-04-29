@@ -31,9 +31,9 @@ class PromotionRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('p.percent', 'DESC')
             ->getQuery();
 
+        if( $query->getResult() ) return $query->getSingleResult();
 
-
-        return $query->getSingleResult();
+        return false;
 
     }
 

@@ -1,0 +1,79 @@
+{% extends 'layouts/full-width.html.twig' %}
+
+{% block title %}
+    Количка
+{% endblock %}
+
+{% block leftSidebar %}
+{% endblock %}
+
+{% block mainContent %}
+        <h1>Данни за Вашата поръчка:</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Адрес за доставка</h4>
+            <div class="row">
+                <div class="col-md-6 labels">Област</div>
+                <div class="col-md-6 values">{{ order.area }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Община</div>
+                <div class="col-md-6 values">{{ order.municipality }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Населено място</div>
+                <div class="col-md-6 values">{{ order.city }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Пощенски код</div>
+                <div class="col-md-6 values">{{ order.postCode }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Адрес</div>
+                <div class="col-md-6 values">{{ order.address }}</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Лични данни</h4>
+            <div class="row">
+                <div class="col-md-6 labels">Име</div>
+                <div class="col-md-6 values">{{ order.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Емайл</div>
+                <div class="col-md-6 values">{{ order.email }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 labels">Телефон</div>
+                <div class="col-md-6 values">{{ order.phone }}</div>
+            </div>
+        </div>
+    </div>
+    <h3>Продукти:</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Име на продукта</th>
+                <th>Количество</th>
+                <th>Ед. цена</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr>
+                    <th>{{ product.product.name }}</th>
+                    <td>{{ product.qty }}</td>
+                    <td>{{ product.price }}лв.</td>
+                </tr>
+
+           {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Form\AdminEditUserType;
+use AppBundle\Form\AdminUserType;
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -23,17 +25,15 @@ class SecurityController extends Controller
      */
     public function registerAction()
     {
-        $form = $this->createForm(UserType::class, null, array(
-            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
-        ));
-
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $form->remove('role');
+            $form = $this->createForm(UserType::class);
             return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
         } else {
+            $form = $this->createForm(AdminUserType::class, null, array(
+                'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+            ));
             return $this->render('user/adduser.html.twig', ['form'=> $form->createView()]);
         }
-
     }
 
     /**
@@ -45,14 +45,19 @@ class SecurityController extends Controller
     public function registerProcess(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user,array(
-            'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
-        ));
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $form = $this->createForm(AdminUserType::class, $user,array(
+                'roles' => $this->get('app.get_roles')->getRolesIdAndTitle()
+            ));
+        } else {
+            $form = $this->createForm(UserType::class, $user);
+        }
+
         $form->handleRequest($request);
 
         $encoder = $this->get('security.password_encoder');
-
         if($form->isSubmitted() && $form->isValid()){
+
             $user->setCreatedOn(new \DateTime());
             $hashedPassword = $encoder->encodePassword($user, $user->getPassword());
 
@@ -61,7 +66,7 @@ class SecurityController extends Controller
 
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 $userRole = $this->getDoctrine()->getRepository('AppBundle:Role')
-                    ->find($request->request->get('user')['role']);
+                    ->find($request->request->get('admin_user')['role']);
             }
 
             $user->setRole($userRole);
@@ -74,6 +79,7 @@ class SecurityController extends Controller
             $this->addFlash('success', "Успешна регистрация! Може да влезнете в профила си.");
 
             return $this->redirectToRoute("user_login");
+
         }else {
             return $this->render('security/register.html.twig', ['form'=> $form->createView()]);
         }

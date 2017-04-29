@@ -17,7 +17,7 @@ class Orders
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
     }
 
     /**
@@ -35,16 +35,12 @@ class Orders
      * @ORM\Column(name="client", type="string", length=255)
      */
 
-    /**
-     * @var Product[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Product")
-     * @ORM\JoinTable(name="orders_products", joinColumns={
-     *     @ORM\JoinColumn(name="order_id", referencedColumnName="id"),
-     *     @ORM\JoinColumn(name="")
-     * },inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")})
-     */
-    private $products;
 
+    /**
+     * @var OrderProducts[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderProducts", mappedBy="order", cascade={"remove"})
+     */
+    private $orderProducts;
 
     /**
      * @var string
@@ -113,6 +109,12 @@ class Orders
      */
     private $postCode;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_on", type="datetimetz", nullable=true)
+     */
+    private $createdOn;
 
     /**
      * Get id
@@ -245,22 +247,6 @@ class Orders
     }
 
     /**
-     * @return Product[]|ArrayCollection
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
-    /**
-     * @param Product[]|ArrayCollection $products
-     */
-    public function setProducts($products)
-    {
-        $this->products = $products;
-    }
-
-    /**
      * @return string
      */
     public function getArea()
@@ -322,6 +308,38 @@ class Orders
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return OrderProducts[]|ArrayCollection
+     */
+    public function getOrderProducts()
+    {
+        return $this->orderProducts;
+    }
+
+    /**
+     * @param OrderProducts[]|ArrayCollection $orderProducts
+     */
+    public function setOrderProducts($orderProducts)
+    {
+        $this->orderProducts = $orderProducts;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
     }
 }
 

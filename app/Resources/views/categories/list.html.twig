@@ -14,6 +14,7 @@
             <td>{{ knp_pagination_sortable(categories, 'ID', 'a.id') }}</td>
             <td>{{ knp_pagination_sortable(categories, 'Име', 'a.name') }}</td>
             <td>Описание</td>
+            <td>{{ knp_pagination_sortable(categories, 'Подредба', 'a.ordering') }}</td>
             <td></td>
         </tr>
         </thead>
@@ -23,9 +24,10 @@
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>{{ category.description }}</td>
+                <td>{{ category.ordering }}</td>
                 <td><a href="{{ path("edit_category") }}/{{ category.id }}"><button class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a></td>
                 <td>
-                    <form action="{{ path('delete_product') }}" method="POST">
+                    <form action="{{ path('delete_category') }}" method="POST">
                         <input type="hidden" name="id" value="{{ category.id }}">
                         <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                     </form>

@@ -10,6 +10,7 @@ use Cocur\Slugify\Slugify;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,9 +76,8 @@ class CategoryController extends Controller
             $category->setSlug($slug);
 
             /** @var UploadedFile $file */
-            $file = $category->getImage();
-
-            if ($file){
+            $file = $category->getImageForm();
+            if($file){
                 $filename = md5($category->getName() . '' . date("now")) . '.' . $file->getClientOriginalExtension();
                 $category->setImage($filename);
             }
@@ -85,11 +85,9 @@ class CategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
-
-            if ($file) {
+            if($file){
                 $file->move($this->get('kernel')->getRootDir() . '/../web/images/categories/' . $category->getId(), $filename);
             }
-
             $this->addFlash('success', "Продуктът е добавен успешно (" . $category->getId() . ")");
 
             return $this->redirectToRoute('categories_list');
@@ -98,6 +96,37 @@ class CategoryController extends Controller
         }
 
     }
+
+    /**
+     * @Route("admin/category/delete", name="delete_category")
+     * @Method("POST")
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Security(expression="has_role('ROLE_EDITOR')")
+     */
+
+    public function deleteProcess(Request $request)
+    {
+
+        $em     = $this->getDoctrine();
+        $category   = $em->getRepository('AppBundle:Category')->find($request->get('id'));
+
+        if($category){
+            $fs = new Filesystem();
+            $imageDir = $this->get('kernel')->getRootDir().'/../web/images/categories/'.$category->getId();
+            $fs->remove($imageDir);
+
+            $em = $em->getManager();
+            $em->remove($category);
+            $em->flush();
+
+            $this->addFlash('success', "Категорията е успешно изтрита");
+            return $this->redirectToRoute("categories_list");
+        }else {
+            $this->addFlash('error', "Грешка! Продуктът не е намерен");
+            return $this->redirectToRoute("categories_list");
+        }
+    }
+
 
     /**
      * @Route("/category/edit/{id}", name="edit_category")

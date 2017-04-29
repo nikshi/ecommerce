@@ -50,4 +50,21 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function fetchRandomProducts($number_of_products){
+        $qb = $this->createQueryBuilder('a');
+        return $qb->select('a')
+            ->setFirstResult(intval(rand(0, $this->getCountRows() - 1)))
+            ->setMaxResults($number_of_products)
+            ->getQuery();
+    }
+
+
+    public function getCountRows()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->getQuery()->getSingleScalarResult();
+        return $qb;
+    }
+
 }

@@ -13,6 +13,20 @@
         <div class="row">
             <div class="col-md-3 left-sidebar">
                 {% block leftSidebar %}{% endblock %}
+                <h3>Произволни продукти</h3>
+                <ul class="random-sidebar-products">
+                {% for product in get_products.getRandomProducts(5) %}
+                    <li>
+                        <div class="rand_products_image col-md-4">
+                            <img width="100%" src="{{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="rand_products_name col-md-8">
+                            <a href="{{ path('product_by_slug', {'category': product.category.slug, 'slug': product.slug}) }}" title="{{ product.name }}">{{ product.name }}</a>
+                        </div>
+
+                    </li>
+                {% endfor %}
+                </ul>
             </div>
 
             <div class="col-md-9 main-content">

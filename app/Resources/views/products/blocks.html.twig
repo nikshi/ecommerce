@@ -5,14 +5,13 @@
 {% endblock %}
 
 {% block leftSidebar %}
-    Left Sidebar
 {% endblock %}
 
 {% block mainContent %}
 
     <div class="row">
         <div class="col-md-3">
-            <img width="100%" src="{{ asset('images/products/15/96dadf066f2d73670cbb109c27cfb3c5.jpg') }}">
+            <img width="100%" src="{{ asset('images/categories/') }}/{{ category.id }}/{{ category.image }}">
         </div>
         <div class="col-md-9">
             <h1>{{ category.name|upper }}</h1>

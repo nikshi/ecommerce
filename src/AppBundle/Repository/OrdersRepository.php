@@ -10,4 +10,16 @@ namespace AppBundle\Repository;
  */
 class OrdersRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function fetchOrdersByUser($userId){
+
+        $qb = $this->createQueryBuilder('a');
+
+        return $qb->select('a')
+            ->where($qb->expr()->eq('a.user', ':userId') )
+            ->setParameter(':userId', $userId)
+            ->orderBy('a.id', 'DESC')
+            ->getQuery();
+    }
+
+
 }

@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class ProductController extends Controller
 {
 
-    private $limit_per_page = 5;
+    private $limit_per_page = 3;
 
     /**
      * @Route("/{categorySlug}", name="products_by_cat_slug")
@@ -43,6 +43,7 @@ class ProductController extends Controller
 
         $price_calculator = $this->get('app.price_calculator');
         $price_calculator->setProductsPromoPrice($products);
+
         return $this->render('products/blocks.html.twig', ['products'=> $products, 'category' => $category]);
     }
 
@@ -63,7 +64,6 @@ class ProductController extends Controller
         $price_calculator = $this->get('app.price_calculator');
         $price_calculator->setProductPromoPrice($product);
 
-        dump($this->get('app.cart')->getCartMini());
         return $this->render('products/singleProduct.html.twig', ['product'=> $product, 'reviewForm' => $reviewForm->createView()]);
     }
 

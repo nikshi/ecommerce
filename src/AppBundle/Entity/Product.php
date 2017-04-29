@@ -17,9 +17,10 @@ class Product
 
     public function __construct()
     {
-        $this->createdOn    = new \DateTime();
-        $this->reviews      = new ArrayCollection();
-        $this->orders       = new ArrayCollection();
+        $this->createdOn     = new \DateTime();
+        $this->reviews       = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+        $this->promotions    = new ArrayCollection();
     }
 
     /**
@@ -39,11 +40,10 @@ class Product
 
 
     /**
-     * @var Orders[]|ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Orders", mappedBy="products")
+     * @var OrderProducts[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\OrderProducts", mappedBy="order")
      */
-
-    private $orders;
+    private $orderProducts;
 
     /**
      * @var Category
@@ -119,6 +119,11 @@ class Product
      */
     private $productImage;
 
+    /**
+     * @var int
+     * @ORM\Column(name="ordering", type="integer", nullable=true)
+     */
+    private $ordering;
 
     /**
      * @var string
@@ -422,21 +427,36 @@ class Product
     }
 
     /**
-     * @return Orders[]|ArrayCollection
+     * @return OrderProducts[]|ArrayCollection
      */
-    public function getOrders()
+    public function getOrderProducts()
     {
-        return $this->orders;
+        return $this->orderProducts;
     }
 
     /**
-     * @param Orders[]|ArrayCollection $orders
+     * @param OrderProducts[]|ArrayCollection $orderProducts
      */
-    public function setOrders($orders)
+    public function setOrderProducts($orderProducts)
     {
-        $this->orders = $orders;
+        $this->orderProducts = $orderProducts;
     }
 
+    /**
+     * @return int
+     */
+    public function getOrdering()
+    {
+        return $this->ordering;
+    }
+
+    /**
+     * @param int $ordering
+     */
+    public function setOrdering($ordering)
+    {
+        $this->ordering = $ordering;
+    }
 
 }
 

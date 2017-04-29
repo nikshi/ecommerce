@@ -36,6 +36,11 @@ class Category
      */
     private $name;
 
+    /**
+     * @var int
+     * @ORM\Column(name="ordering", type="integer", nullable=true)
+     */
+    private $ordering;
 
     /**
      * @var string
@@ -71,6 +76,7 @@ class Category
      */
 
     private $image_form;
+
 
     /**
      * @var Promotion[]|ArrayCollection
@@ -224,5 +230,22 @@ class Category
     {
         $this->image_form = $image_form;
     }
+
+    /**
+     * @return int
+     */
+    public function getOrdering()
+    {
+        return $this->ordering;
+    }
+
+    /**
+     * @param int $ordering
+     */
+    public function setOrdering($ordering)
+    {
+        $this->ordering = $ordering;
+    }
+
 }
 
