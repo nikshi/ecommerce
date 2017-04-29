@@ -1,0 +1,46 @@
+{% extends 'layouts/left-sidebar.html.twig' %}
+
+{% block title %}
+    Търсене
+{% endblock %}
+
+{% block leftSidebar %}
+{% endblock %}
+
+{% block mainContent %}
+
+    <h1>Търсене за: <em>{{ app.request.get('phrase') }}</em></h1>
+        <ul class="category-block-nav">
+            <li>{{ knp_pagination_sortable(products, 'Дата на добавяне', 'p.id') }}</li>
+            <li>{{ knp_pagination_sortable(products, 'Име', 'p.name') }}</li>
+            <li>{{ knp_pagination_sortable(products, 'Цена', 'p.price') }}</li>
+
+        </ul>
+    <div class="clearfix"></div>
+        <ul class="category-block-products">
+        {% for product in products %}
+            <li>
+                <a href="{{ path('product_by_slug', {'category': product.category.slug, 'slug': product.slug}) }}">
+                <div class="category-block-product-image" style="background-image: url({{ asset('images/products/') }}/{{ product.id }}/{{ product.productImage }})">
+                </div>
+                <div class="category-block-product-content">
+                    <div class="product-title">
+                        <h4>{{ product.name }}</h4>
+                    </div>
+                    <div class="category-block-product-price">Цена: {% if product.promoPrice > 0 %} {{ product.promoPrice|number_format(2, '.', ',') }}лв.<span class="old-price"><del>{{ product.price|number_format(2, '.', ',') }}лв.</del></span>{% else %} {{ product.price|number_format(2, '.', ',') }}лв. {% endif %}</div>
+                </div>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
+
+ {% block stylesheets %}
+ {% endblock %}
+
+{% block javascripts %}
+{% endblock %}

@@ -14,18 +14,17 @@
                 </div>
                 <div class="col-md-5">
                     <div class="header-search">
-                        <form method="GET">
+                        <form method="GET" action="{{ path('search_products') }}">
                             <div class="categories-wrap inline-block">
-                                <select class="form-control">
-                                    <option>Всички категории</option>
-                                    <option>Дрехи</option>
-                                    <option>Техника</option>
-                                    <option>Обувки</option>
-                                    <option>Козметика</option>
+                                <select class="form-control" name="category">
+                                    <option value="0">Всички категории</option>
+                                    {% for id, category in get_categories.getCategoriesWithIds %}
+                                        <option value="{{ id }}" {% if app.request.get('category') == id  %} selected {% endif %}>{{ category }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                                 <div class="search-wrap inline-block">
-                                    <input type="text" class="form-control" placeholder="Text input">
+                                    <input type="text" class="form-control" name="phrase" placeholder="Какво търсите?" value="{{ app.request.get('phrase') }}">
                                     <button class="search-btn" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                                 </div>
                         </form>

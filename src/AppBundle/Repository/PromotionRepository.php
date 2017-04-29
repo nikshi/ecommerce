@@ -37,4 +37,14 @@ class PromotionRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+
+    public function fetchRandomPromoProducts($number_of_products){
+        $qb = $this->createQueryBuilder('p');
+        return $qb->select('p')
+            ->where($qb->expr()->isNotNull('p.product'))
+            ->setMaxResults($number_of_products)
+            ->orderBy('RAND()')
+            ->getQuery();
+    }
+
 }

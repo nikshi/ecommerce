@@ -23,6 +23,32 @@ class ProductController extends Controller
 
     private $limit_per_page = 3;
 
+
+    /**
+     * @Route("/search_products", name="search_products")
+     * @Method("GET")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+
+    public function productsSearch(Request $request)
+    {
+
+        $query = $this->getDoctrine()->getRepository('AppBundle:Product')->searchProducts($request->get('phrase'), $request->get('category'));
+
+        $paginator  = $this->get('knp_paginator');
+        $products = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/, $this->limit_per_page/*limit per page*/
+        );
+
+        $price_calculator = $this->get('app.price_calculator');
+        $price_calculator->setProductsPromoPrice($products);
+
+        return $this->render('products/searchResults.html.twig', ['products'=> $products]);
+    }
+
+
+
     /**
      * @Route("/{categorySlug}", name="products_by_cat_slug")
      * @Method("GET")

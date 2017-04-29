@@ -29,7 +29,12 @@
                 <p>{{ product.description }}</p>
                 <div class="order-block">
                     <div class="product-price">
-                        <span class="price-label">Цена:</span><span id="price_value">{{ product.price|number_format(2, '.', ',') }}</span>лв.
+                        <span class="price-label">Цена:</span>
+                        {% if product.promoPrice > 0 %}
+                            <span id="price_value"><strong>{{ product.promoPrice|number_format(2, '.', ',') }}лв.</strong> <del>{{ product.price|number_format(2, '.', ',') }}лв.</del></span>
+                        {% else %}
+                            <span id="price_value"><strong>{{ product.promoPrice|number_format(2, '.', ',') }}</strong></span>лв.
+                        {% endif %}
                     </div>
                     <form class="order-form" method="POST" action="{{ path('add_to_cart') }}">
                         <div class="row">

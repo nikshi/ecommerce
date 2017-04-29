@@ -21,4 +21,4 @@ services:
                 arguments: ['@session', '@doctrine.orm.entity_manager']
     app.products:
                 class: AppBundle\Service\Products
-                arguments: ['@doctrine.orm.entity_manager']
+                arguments: ['@doctrine.orm.entity_manager', '@app.price_calculator']

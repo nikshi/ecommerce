@@ -32,7 +32,6 @@ class PriceCalculator
     public function __construct(EntityManager $emanager)
     {
         $this->enmanager = $emanager;
-//        $this->promotion = $this->initMaxPromotion();
     }
 
 

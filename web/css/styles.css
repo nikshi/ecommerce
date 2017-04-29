@@ -11,6 +11,10 @@ a:hover, a:focus, a:active{
     opacity: 0.6;
 }
 
+ul {
+    list-style: none;
+    padding-left: 0;
+}
 
 .flash-notice {
     background: #f1f1f1;
@@ -39,6 +43,46 @@ a:hover, a:focus, a:active{
 
 .inline-block {
     display: inline-block;
+}
+
+
+
+/*HomePage*/
+
+ul.random-home-promotion-products{
+    text-align: center;
+}
+.random-home-promotion-products li{
+    width: 23%;
+    display: inline-block;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.random-home-promotion-products li:last-child{
+    border-right: 0;
+}
+
+.random-home-promotion-products li .rand_products_image{
+    height: 250px;
+    overflow: hidden;
+}
+
+.random-home-promotion-products .old-price {
+    font-size: 18px;
+}
+
+.random-home-promotion-products .promo-price {
+    text-align: center;
+    font-size: 22px;
+    color: #720000;
+}
+
+.promo-block h2 {
+
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 /*Header*/
@@ -139,8 +183,6 @@ header {
     width: 213px;
     top:34px;
     text-align: left;
-    list-style: none;
-    padding-left: 0;
     border-top: 1px solid #fff;
 }
 
@@ -162,8 +204,6 @@ header {
 }
 
 .header-categories-menu ul {
-    list-style: none;
-    padding-left: 0;
     margin-bottom: 0;
 }
 
@@ -210,10 +250,6 @@ header {
     vertical-align: top;
 }
 
-.mini-cart-list ul {
-    list-style: none;
-    padding-left: 0;
-}
 
 .mini-cart-list ul li {
     display: block;
@@ -240,8 +276,6 @@ header {
 /*Category list*/
 
 .category-block-nav {
-    list-style: none;
-    padding-left: 0;
     text-align: right;
 }
 
@@ -250,12 +284,6 @@ header {
     margin-left: 15px;
 }
 
-
-
-.category-block-products {
-    list-style: none;
-    padding-left: 0;
-}
 
 .category-block-products li{
     display: inline-block;
@@ -306,6 +334,10 @@ span.old-price {
 
 /*Single Product*/
 
+.product-description #price_value {
+    font-size: 18px;
+}
+
 .order-block {
     margin-top: 30px;
 }
@@ -354,19 +386,10 @@ span.old-price {
 }
 
 
-.editor-menu {
-    list-style: none;
-    padding-left: 0;
-}
-
 
 /*Sidebars*/
 
 
-ul.random-sidebar-products {
-    list-style: none;
-    padding-left: 0;
-}
 
 ul.random-sidebar-products li {
     display: block;

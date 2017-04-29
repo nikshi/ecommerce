@@ -50,21 +50,36 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+
+    public function searchProducts($phrase, $category){
+
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->select('p');
+        $qb->where($qb->expr()->gt('p.id', 0));
+
+        if( $category > 0 ){
+            $qb->andWhere($qb->expr()->eq('p.category', ':catId') )
+            ->setParameter(':catId', $category);
+        }
+
+        $qb->andWhere($qb->expr()->orX(
+                $qb->expr()->like('p.name', ':phrase'),
+                $qb->expr()->like('p.description', ':phrase')
+            ))
+            ->setParameter(':phrase', '%'.$phrase.'%')
+            ->orderBy('p.id', 'DESC')->getQuery();
+
+        return $qb->getQuery();
+    }
+
     public function fetchRandomProducts($number_of_products){
-        $qb = $this->createQueryBuilder('a');
-        return $qb->select('a')
-            ->setFirstResult(intval(rand(0, $this->getCountRows() - 1)))
+        $qb = $this->createQueryBuilder('p');
+        return $qb->select('p')
             ->setMaxResults($number_of_products)
+            ->orderBy('RAND()')
             ->getQuery();
     }
 
-
-    public function getCountRows()
-    {
-        $qb = $this->createQueryBuilder('a')
-            ->select('COUNT(a.id)')
-            ->getQuery()->getSingleScalarResult();
-        return $qb;
-    }
 
 }

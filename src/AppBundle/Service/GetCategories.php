@@ -41,6 +41,14 @@ class GetCategories
     }
 
 
+    public function getCategoriesWithIds(){
+        $result = array();
+        foreach ($this->getCategories() as $category) {
+            $result[$category->getId()] = $category->getName();
+        }
+        return $result;
+    }
+
     public function getCategories(){
         $query = $this->enmanager->getRepository('AppBundle:Category')->fetchAllCategories();
         return $query->getResult();
