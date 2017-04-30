@@ -205,9 +205,11 @@ class CartController extends Controller
     {
         $product = $this->getDoctrine()->getRepository('AppBundle:Product')->find($request->request->get('product_id'));
 
-        if($product->getUser()->getId() == $this->getUser()->getId()){
-            $this->addFlash('error', "Не може да поръчвате Ваш продукт");
-            return $this->redirectToRoute("product_by_slug", array('category'=> $product->getCategory()->getSlug(), 'slug' => $product->getSlug()));
+        if ( $this->getUser() ){
+            if ($product->getUser()->getId() == $this->getUser()->getId()) {
+                $this->addFlash('error', "Не може да поръчвате Ваш продукт");
+                return $this->redirectToRoute("product_by_slug", array('category' => $product->getCategory()->getSlug(), 'slug' => $product->getSlug()));
+            }
         }
 
         if($request->request->get('order_qty') < 0){
