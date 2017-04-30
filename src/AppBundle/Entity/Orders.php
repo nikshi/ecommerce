@@ -71,6 +71,10 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="area", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Областта не може да е празна"
+     * )
      */
     private $area;
 
@@ -78,6 +82,9 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="municipality", type="string", length=255)
+     * @Assert\NotBlank(
+     *     message="Моля попълнете община"
+     * )
      */
     private $municipality;
 
@@ -85,6 +92,10 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Моля попълнете град"
+     * )
      */
     private $city;
 
@@ -92,6 +103,10 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Моля попълнете телефона си"
+     * )
      */
     private $phone;
 
@@ -99,6 +114,10 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="address", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Моля попълнете адреса си"
+     * )
      */
     private $address;
 
@@ -106,6 +125,10 @@ class Orders
      * @var string
      *
      * @ORM\Column(name="post_code", type="integer")
+     *
+     * @Assert\NotBlank(
+     *     message="Пощенския код не може да е празен"
+     * )
      */
     private $postCode;
 

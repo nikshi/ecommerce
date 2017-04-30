@@ -51,7 +51,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("products/edit/{id}", name="edit_product")
+     * @Route("/products/edit/{id}", name="edit_product")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -83,7 +83,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("products/edit/{id}")
+     * @Route("/products/edit/{id}")
      * @Method("POST")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -176,7 +176,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("products/addproduct", name="add_product")
+     * @Route("/products/addproduct", name="add_product")
      * @Method("GET")
      * @return \Symfony\Component\HttpFoundation\Response
      * @Security(expression="has_role('ROLE_USER')")
@@ -191,7 +191,7 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("products/addproduct")
+     * @Route("/products/addproduct")
      * @Method("POST")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
